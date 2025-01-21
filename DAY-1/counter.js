@@ -7,7 +7,7 @@ const rl = readline.createInterface({
 
 rl.question(`Define The Duration`, (seconds) => {
 
-  const count=setInterval(()=>{
+  let count=setInterval(()=>{
     if(seconds>0){
       console.log(`Remaining Time : ${seconds}`)
       seconds--;
