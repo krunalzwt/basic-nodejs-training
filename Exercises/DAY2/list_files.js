@@ -4,9 +4,12 @@ const dir=path.join(__dirname);
 
 fs.readdir(dir,(err,file)=>{
 
-    file.forEach((item)=>{
-        console.log(item);
-    })
-
+    try{
+        file.forEach((item)=>{
+            console.log(item);
+        })
+    }catch(err){
+        console.log(err);
+    }
 });
 
