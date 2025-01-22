@@ -7,15 +7,22 @@ const rl = readline.createInterface({
 
 rl.question(`Define The Duration`, (seconds) => {
 
-  let count=setInterval(()=>{
-    if(seconds>0){
-      console.log(`Remaining Time : ${seconds}`)
-      seconds--;
-    }else{
-      console.log("Time's up!!");
-      clearInterval(count);
-    }
-  },1000);
+  let input = Number(seconds);
+  const min_int = 1;
+
+  if (input >= min_int && typeof input === "number") {
+    let count=setInterval(()=>{
+      if(input>0){
+        console.log(`Remaining Time : ${input}`)
+        input--;
+      }else{
+        console.log("Time's up!!");
+        clearInterval(count);
+      }
+    },1000);
+  } else {
+    console.log("Invalid Input!!");
+  }
 
   rl.close();
 });
