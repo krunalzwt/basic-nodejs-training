@@ -2,9 +2,9 @@ const fs=require('fs');
 const path=require('path');
 const dir=path.join(__dirname);
 
-fs.readdir(dir,(err,dir)=>{
+fs.readdir(dir,(err,file)=>{
 
-    dir.forEach((item)=>{
+    file.forEach((item)=>{
         console.log(item);
     })
 
