@@ -14,7 +14,7 @@ const myServer = http
   .createServer((req, res) => {
     // Parse query string
     const q = url.parse(req.url, true);
-    console.log(q);
+    // console.log(q);
     switch (req.url.split("?")[0]) {
       case "/":
         res.end("This is the home page!!");
@@ -37,7 +37,7 @@ const myServer = http
       // Read specific file
       case "/file":
         let filepath = path.join(__dirname, "files", q.query.name);
-        console.log(filepath);
+        // console.log(filepath);
         fs.readFile(filepath, "utf8", (err, data) => {
           if (err) {
             console.log(err);
@@ -114,5 +114,5 @@ const myServer = http
     }
   })
   .listen(8000, () => {
-    console.log("Server started on port 8000");
+    console.log("Server started on http://localhost:8000");
   });
