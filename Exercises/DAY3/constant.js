@@ -22,6 +22,14 @@ let users = [
     "age": 30,
     "role": "Admin",
     "isActive": true
+  },
+  {
+    "id": 4,
+    "name": "John Doe",
+    "email": "john@example.com",
+    "age": 30,
+    "role": "Admin",
+    "isActive": true
   }
 ];
 
