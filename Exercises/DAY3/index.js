@@ -18,31 +18,52 @@ app.get("/users", (req, res) => {
 app.get("/users/:id", (req, res) => {
   const userId = parseInt(req.params.id);
   const user = users.find((u) => u.id === userId);
-  const updatedContent = `let users = ${JSON.stringify(users, null, 2)};\n\nmodule.exports = { users };`;
+  // const updatedContent = `let users = ${JSON.stringify(users, null, 2)};\n\nmodule.exports = { users };`;
   
   if (user) {
       res.status(200).json(user);
-  } else {
+    } else {
       res.status(404).send("User not found");
     }
-});
-
-app.post("/users", (req, res) => {
+  });
+  
+  app.post("/users", (req, res) => {
     const { id, name, email, age, role, isActive } = req.body;
     const newUser = { id, name, email, age, role, isActive };
-  users.push(newUser);
-
-  fs.writeFile("./constant.js", updatedContent, (err) => {
-    if (err) {
-      return res.status(500).send("Error updating user data");
+    const userExists = users.some(user => user.id === newUser.id);
+    if(userExists){
+      return res.send("id already exists!!");
+    }else{
+      users.push(newUser);
+        if (err) {
+          return res.status(500).send("Error updating user data");
+        }
+        res.status(201).send(newUser);
     }
-    res.status(201).send(newUser);
-  });
 });
 
 app.patch("/users/:id",(req,res)=>{
-        
+  const updates =req.body;
+  const userId = parseInt(req.params.id);
+  const user = users.find((u) => u.id === userId);
+  if(!user){
+    res.status(404).send('User does not found!!');
+  }
+  Object.assign(user,updates)
+  res.json(user);
 })
+
+app.delete("/users/:id",(req,res)=>{
+  const userId=parseInt(req.params.id);
+  const userIndex = users.findIndex((u)=>u.id===userId);
+  if(userIndex===-1){
+    res.status(404).send('User does not found!!');
+  }
+  users.splice(userIndex,1);
+  res.status(200).send("successfully deleted!!");
+  
+
+});
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
