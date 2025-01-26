@@ -50,18 +50,13 @@ const root = (req, res) => {
         }
       }
 
-    //   if (age) {
-    //     const parsedAge = parseInt(age);
-    //     if (!isNaN(parsedAge)) {
-    //       filteredUsers = filteredUsers.filter((user) => user.age === parsedAge);
-    //     } else {
-    //       return res
-    //         .status(400)
-    //         .json({ message: "Invalid age query parameter." });
-    //     }
-    //   }
-
+      
+      if (filteredUsers.length === 0) {
+        return res.status(404).json({ message: "No users found." });
+      }
+      
       return res.status(200).json({ users: filteredUsers });
+
     } else {
       return res.status(404).json({ message: "No users found." });
     }
