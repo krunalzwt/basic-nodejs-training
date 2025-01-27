@@ -7,6 +7,7 @@ const path = require("path");
 const logMiddleware = require("./middleware/log.js");
 
 app.use(express.json());
+app.use(express.urlencoded({extended:false}));
 app.use(logMiddleware);
 
 app.use('/',require('./routers/mainRoutes.js'));

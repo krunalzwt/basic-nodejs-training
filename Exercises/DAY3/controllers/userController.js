@@ -1,5 +1,8 @@
 const { users } = require("../constant");
 const path = require("path");
+const multer=require('multer');
+// const __dirname=path.resolve();
+const uploadsDir=path.join(__dirname,'./uploads')
 
 const root = (req, res) => {
   res.send("Welcome to the user Management API!");
@@ -123,6 +126,25 @@ const deleteUser = (req, res) => {
   res.status(200).send("successfully deleted!!");
 };
 
+const storage=multer.diskStorage({
+  destination:function (req,file,cb){
+    // console.log(uploads)
+    return cb(null,uploadsDir)
+  },
+  filename:function(req,file,cb){
+    return cb(null,`${Date.now()}-${file.originalname}`);
+  }
+});
+//uploadImages
+const uploadImg = (req,res)=>{
+  console.log(req.body);
+  console.log(req.file);
+  return res.redirect("/");
+};
+
+
+const upload=multer({storage});
+
 module.exports = {
   root,
   getAllUsers,
@@ -130,4 +152,6 @@ module.exports = {
   createUser,
   updateUserById,
   deleteUser,
+  uploadImg,
+  upload
 };
