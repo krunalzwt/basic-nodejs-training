@@ -126,24 +126,60 @@ const deleteUser = (req, res) => {
   res.status(200).send("successfully deleted!!");
 };
 
-const storage=multer.diskStorage({
-  destination:function (req,file,cb){
-    // console.log(uploads)
-    return cb(null,uploadsDir)
+//img upload
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, uploadsDir);
   },
-  filename:function(req,file,cb){
-    return cb(null,`${Date.now()}-${file.originalname}`);
+  filename: function (req, file, cb) {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  },
+});
+
+
+const upload = multer({
+  storage: storage, 
+  limits: { fileSize: 2 * 1024 * 1024 }, 
+  fileFilter: (req, file, cb) => {
+    if (!file.mimetype.startsWith('image/')) {
+      return cb(new Error('Only images are allowed!'), false); 
+    }
+    cb(null, true); 
   }
 });
-//uploadImages
-const uploadImg = (req,res)=>{
-  console.log(req.body);
-  console.log(req.file);
-  return res.redirect("/");
+
+
+const uploadImg = (req, res) => {
+  if (req.file) {
+    const { id } = req.params;
+    const user = users.find((u) => u.id === parseInt(id));
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found!' });
+    }
+
+    user.profilePath = req.file.path; 
+    return res.status(200).json({ message: 'Successfully uploaded!' });
+  }
+
+  return res.status(400).json({ error: 'No file uploaded or invalid file type!' });
 };
 
 
-const upload=multer({storage});
+const handleError = (err, req, res, next) => {
+  if (err instanceof multer.MulterError) {
+    if (err.code === 'LIMIT_FILE_SIZE') {
+      return res.status(400).json({ error: 'File size should be less than 2 MB!' });
+    }
+  } else if (err.message === 'Only images are allowed!') {
+    return res.status(400).json({ error: 'Only images are allowed!' });
+  }else if(files.length!==1){
+    res.status(500).json({error:'only single file allowed!!'});
+  }
+
+
+  return res.status(500).json({ error: 'An unexpected error occurred!' });
+};
 
 module.exports = {
   root,
@@ -153,5 +189,6 @@ module.exports = {
   updateUserById,
   deleteUser,
   uploadImg,
-  upload
+  upload,
+  handleError
 };
