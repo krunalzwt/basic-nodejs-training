@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./Exercises/DAY3/index.js",
-    "dev": "nodemon ./Exercises/DAY3/index.js"
+    "day2":"node ./Exercises/DAY2/server.js",
+    "day3": "node ./Exercises/DAY3/index.js",
+    "dev3": "nodemon ./Exercises/DAY3/index.js"
   },
   "repository": {
     "type": "git",
