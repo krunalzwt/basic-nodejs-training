@@ -3,7 +3,7 @@ const path = require("path");
 const multer = require("multer");
 // const __dirname=path.resolve();
 const uploadsDir = path.join(__dirname, "./uploads");
-const { getNodes, getNode, createNode,updateNode,deleteNode } = require("../database/dbConnection");
+const { getNodes, getNode, createNode,updateNode,deleteNode } = require("../database/usertableQueries.js");
 
 const root = (req, res) => {
   res.send("Welcome to the user Management API!");
@@ -88,6 +88,8 @@ const deleteUser = async(req, res) => {
   }
 };
 
+
+
 //img upload
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -109,22 +111,26 @@ const upload = multer({
   },
 });
 
-const uploadImg = (req, res) => {
-  if (req.file) {
-    const { id } = req.params;
-    const user = users.find((u) => u.id === parseInt(id));
-
-    if (!user) {
-      return res.status(404).json({ error: "User not found!" });
+const uploadImg =async(req, res) => {
+  try{
+    if (req.file) {
+      const { id } = req.params;
+      const user = await getNode(id);
+  
+      if (!user) {
+        return res.status(404).json({ error: "User not found!" });
+      }
+  
+      user.profilePath = req.file.path;
+      return res.status(200).json({ message: "Successfully uploaded!" });
     }
-
-    user.profilePath = req.file.path;
-    return res.status(200).json({ message: "Successfully uploaded!" });
+  
+    return res
+      .status(400)
+      .json({ error:"No file uploaded or invalid file type!" });
+  }catch(err){
+    console.error("err uploading a file",err);
   }
-
-  return res
-    .status(400)
-    .json({ error: "No file uploaded or invalid file type!" });
 };
 
 const handleError = (err, req, res, next) => {
@@ -142,6 +148,8 @@ const handleError = (err, req, res, next) => {
 
   return res.status(500).json({ error: "An unexpected error occurred!" });
 };
+
+
 
 module.exports = {
   root,

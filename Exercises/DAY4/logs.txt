@@ -434,3 +434,7 @@ Method: GET
 Timestamp: Tue Jan 28 2025 12:47:15 GMT+0530 (India Standard Time)
 Message: {"name":"manan","email":"manan@gmail.com","age":20,"role":"User","isActive":true}
 
+Method: GET
+Timestamp: Tue Jan 28 2025 13:26:49 GMT+0530 (India Standard Time)
+Message: {"name":"manan","email":"manan@gmail.com","age":20,"role":"User","isActive":true}
+
