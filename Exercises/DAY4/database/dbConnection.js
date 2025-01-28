@@ -9,16 +9,17 @@ const pool = mysql.createPool({
     database:process.env.MYSQL_DATABASE
 }).promise();
 
-pool.query(`CREATE TABLE IF NOT EXISTS
-    users (
-        id integer PRIMARY KEY AUTO_INCREMENT,
-        name VARCHAR(255) NOT NULL,
-        email VARCHAR(255),
-        age integer,
-        role VARCHAR(255),
-        isActive BOOLEAN
-    );`
-);
+pool.query(
+    `CREATE TABLE IF NOT EXISTS users 
+  (id INT AUTO_INCREMENT PRIMARY KEY,
+  name TEXT NOT NULL, 
+  email VARCHAR(255) UNIQUE, 
+  age INT, 
+  role VARCHAR(255), 
+  isActive BOOLEAN, 
+  createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
+  updatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)`
+  );
 
 pool.query(
     `CREATE TABLE IF NOT EXISTS user_images (

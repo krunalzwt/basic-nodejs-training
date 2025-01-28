@@ -4,5 +4,7 @@ node_modules
 package-lock.json
 /Exercises/DAY3/controllers/uploads/
 /Exercises/DAY4/controllers/uploads/
-/Exercises/DAY4/logs.txt/
-/Exercises/DAY3/logs.txt/   
+/Exercises/DAY5/controllers/uploads/
+/Exercises/DAY4/logs.txt
+/Exercises/DAY3/logs.txt
+/Exercises/DAY5/logs.txt
