@@ -142,3 +142,135 @@ Method: POST
 Timestamp: Mon Jan 27 2025 18:49:12 GMT+0530 (India Standard Time)
 Message: {"id":3,"name":"Jay","email":"jay@gmail.com","age":53,"role":"User","isActive":false}
 
+Method: GET
+Timestamp: Tue Jan 28 2025 10:35:10 GMT+0530 (India Standard Time)
+Message: {"id":3,"name":"Jay","email":"jay@gmail.com","age":53,"role":"User","isActive":false}
+
+Method: GET
+Timestamp: Tue Jan 28 2025 10:35:49 GMT+0530 (India Standard Time)
+Message: {"id":3,"name":"Jay Patel","email":"jay@gmail.com","age":53,"role":"User","isActive":false}
+
+Method: GET
+Timestamp: Tue Jan 28 2025 10:35:58 GMT+0530 (India Standard Time)
+Message: {"id":3,"name":"Jay Patel","email":"jay@gmail.com","age":53,"role":"User","isActive":false}
+
+Method: POST
+Timestamp: Tue Jan 28 2025 10:36:28 GMT+0530 (India Standard Time)
+Message: {"name":"Jay Patel","email":"jay@gmail.com"}
+
+Method: POST
+Timestamp: Tue Jan 28 2025 10:37:03 GMT+0530 (India Standard Time)
+Message: {"id":"3","name":"Jay Patel","email":"jay@gmail.com"}
+
+Method: POST
+Timestamp: Tue Jan 28 2025 10:37:04 GMT+0530 (India Standard Time)
+Message: {"id":"3","name":"Jay Patel","email":"jay@gmail.com"}
+
+Method: POST
+Timestamp: Tue Jan 28 2025 10:37:24 GMT+0530 (India Standard Time)
+Message: {"id":"3","name":"Jay Patel","email":"jay@gmail.com"}
+
+Method: GET
+Timestamp: Tue Jan 28 2025 10:37:29 GMT+0530 (India Standard Time)
+Message: {"id":"3","name":"Jay Patel","email":"jay@gmail.com"}
+
+Method: POST
+Timestamp: Tue Jan 28 2025 10:39:01 GMT+0530 (India Standard Time)
+Message: {"id":"3","name":"Jay Patel","email":"jay@gmail.com"}
+
+Method: POST
+Timestamp: Tue Jan 28 2025 10:39:47 GMT+0530 (India Standard Time)
+Message: {"id":"3","name":"Jay Patel","email":"jay@gmail.com"}
+
+Method: POST
+Timestamp: Tue Jan 28 2025 10:39:49 GMT+0530 (India Standard Time)
+Message: {"id":"3","name":"Jay Patel","email":"jay@gmail.com"}
+
+Method: POST
+Timestamp: Tue Jan 28 2025 10:39:51 GMT+0530 (India Standard Time)
+Message: {"id":"3","name":"Jay Patel","email":"jay@gmail.com"}
+
+Method: POST
+Timestamp: Tue Jan 28 2025 10:42:38 GMT+0530 (India Standard Time)
+Message: {"id":"3","name":"Jay Patel","email":"jay@gmail.com"}
+
+Method: POST
+Timestamp: Tue Jan 28 2025 10:43:49 GMT+0530 (India Standard Time)
+Message: {"id":"3","name":"Jay Patel","email":"jay@gmail.com"}
+
+Method: PATCH
+Timestamp: Tue Jan 28 2025 10:44:01 GMT+0530 (India Standard Time)
+Message: {"id":"3","name":"Jay Patel","email":"jay@gmail.com"}
+
+Method: PATCH
+Timestamp: Tue Jan 28 2025 10:44:27 GMT+0530 (India Standard Time)
+Message: {"id":"3","name":"Jay Patel","email":"jay@gmail.com"}
+
+Method: PATCH
+Timestamp: Tue Jan 28 2025 10:45:21 GMT+0530 (India Standard Time)
+Message: {"id":"3","name":"Jay Patel","email":"jay@gmail.com"}
+
+Method: PATCH
+Timestamp: Tue Jan 28 2025 10:51:07 GMT+0530 (India Standard Time)
+Message: {"id":"3","name":"Jay Patel","email":"jay@gmail.com"}
+
+Method: PATCH
+Timestamp: Tue Jan 28 2025 10:51:39 GMT+0530 (India Standard Time)
+Message: {"id":"3","name":"Jay Patel","email":"jay@gmail.com"}
+
+Method: PATCH
+Timestamp: Tue Jan 28 2025 10:54:14 GMT+0530 (India Standard Time)
+Message: {"id":"3","name":"Jay Patel","email":"jay@gmail.com"}
+
+Method: PATCH
+Timestamp: Tue Jan 28 2025 10:54:20 GMT+0530 (India Standard Time)
+Message: {"id":"3","name":"Jay Patel","email":"jay@gmail.com"}
+
+Method: PATCH
+Timestamp: Tue Jan 28 2025 10:54:40 GMT+0530 (India Standard Time)
+Message: {"id":"3","name":"Jay Patel","email":"jay@gmail.com","role":"User"}
+
+Method: PATCH
+Timestamp: Tue Jan 28 2025 11:05:30 GMT+0530 (India Standard Time)
+Message: {"id":"3","name":"Jay Patel","email":"jay@gmail.com"}
+
+Method: GET
+Timestamp: Tue Jan 28 2025 11:05:53 GMT+0530 (India Standard Time)
+Message: {"id":"3","name":"Jay Patel","email":"jay@gmail.com"}
+
+Method: GET
+Timestamp: Tue Jan 28 2025 11:06:55 GMT+0530 (India Standard Time)
+Message: {"name":"Jay Patel","email":"jay@gmail.com"}
+
+Method: GET
+Timestamp: Tue Jan 28 2025 11:07:04 GMT+0530 (India Standard Time)
+Message: {"name":"Jay Mak","email":"jay@gmail.com"}
+
+Method: PATCH
+Timestamp: Tue Jan 28 2025 11:07:13 GMT+0530 (India Standard Time)
+Message: {"name":"Jay Mak","email":"jay@gmail.com"}
+
+Method: PATCH
+Timestamp: Tue Jan 28 2025 11:12:21 GMT+0530 (India Standard Time)
+Message: {"name":"Jay sfdghergh","email":"jay@gmail.com"}
+
+Method: GET
+Timestamp: Tue Jan 28 2025 11:14:08 GMT+0530 (India Standard Time)
+Message: {"id":"3","name":"Jay sfdghergh","email":"jay@gmail.com"}
+
+Method: PATCH
+Timestamp: Tue Jan 28 2025 11:14:17 GMT+0530 (India Standard Time)
+Message: {"id":"3","name":"Jay er","email":"jay@gmail.com"}
+
+Method: PATCH
+Timestamp: Tue Jan 28 2025 11:15:37 GMT+0530 (India Standard Time)
+Message: {"id":"3","name":"Jay fsgwrewr","email":"jay@gmail.com"}
+
+Method: PATCH
+Timestamp: Tue Jan 28 2025 11:15:46 GMT+0530 (India Standard Time)
+Message: {"name":"Jay gthegh5tyh4t","email":"jay@gmail.com"}
+
+Method: GET
+Timestamp: Tue Jan 28 2025 11:15:51 GMT+0530 (India Standard Time)
+Message: {"name":"Jay gthegh5tyh4t","email":"jay@gmail.com"}
+

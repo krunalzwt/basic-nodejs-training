@@ -3,7 +3,7 @@ const path = require("path");
 const multer = require("multer");
 // const __dirname=path.resolve();
 const uploadsDir = path.join(__dirname, "./uploads");
-const { getNodes, getNode, createNode } = require("../database/dbConnection");
+const { getNodes, getNode, createNode,updateNode } = require("../database/dbConnection");
 
 const root = (req, res) => {
   res.send("Welcome to the user Management API!");
@@ -56,16 +56,18 @@ const createUser = async (req, res) => {
   }
 };
 
-// completed till here.....
-
 //idvalidationF
-const updateUserById = (req, res) => {
-  const { name, email, age, role, isActive } = req.body;
-  const userId = parseInt(req.params.id);
-  const user = users.find((u) => u.id === userId);
+const updateUserById = async(req, res) => {
+  try{
+    const { name, email, age, role, isActive } = req.body;
+    const userId = parseInt(req.params.id);
 
-  Object.assign(user, { name, email, age, role, isActive });
-  res.json(user);
+    const updateUser=await updateNode(userId,{name,email,age,role,isActive});
+    res.status(200).json(updateUser);
+  }catch(err){
+    console.error('Error updaing the user',err);
+    res.status(500).send('Error upading the user!');
+  }
 };
 
 //idvalidationF

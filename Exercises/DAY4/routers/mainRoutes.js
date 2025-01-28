@@ -4,12 +4,13 @@ const {root,getAllUsers,getUserById,createUser,updateUserById,deleteUser, upload
 const idValidation = require('../middleware/idValid');
 const createUserValidations = require('../middleware/createUserValidations');
 const { upload } = require('../controllers/userController'); // Adjust the path to userController
+const updateUserValidations = require('../middleware/updateUserValidations');
 
 
 
 router.route('/').get(root);
 router.route('/users').get(getAllUsers).post(createUserValidations,createUser);
-router.route('/users/:id').get(idValidation,getUserById).patch(idValidation,createUserValidations,updateUserById).delete(idValidation,deleteUser);
+router.route('/users/:id').get(idValidation,getUserById).patch(idValidation,updateUserValidations,updateUserById).delete(idValidation,deleteUser);
 router.route('/upload-image/:id').post(upload.single('profileImage'),uploadImg,handleError);
 
 module.exports=router;

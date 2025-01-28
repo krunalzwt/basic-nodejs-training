@@ -24,9 +24,46 @@ const createNode=async({name,email,age,role,isActive})=>{
     return getNode(id);
 }
 
+const updateNode=async(id,updates)=>{
+    const feilds=[]
+    const values=[]
+
+    if(updates.name){
+        feilds.push("name=?");
+        values.push(updates.name);
+    }
+    if(updates.email){
+        feilds.push("email=?");
+        values.push(updates.email);
+    }
+    if(updates.age){
+        feilds.push("age=?");
+        values.push(updates.age);
+    }
+    if(updates.role){
+        feilds.push("role=?");
+        values.push(updates.role);
+    }
+    if(updates.isActive){
+        feilds.push("isActive=?");
+        values.push(updates.isActive);
+    }
+
+    if(feilds.length===0){
+        throw new Error('no feilds provided for updates!');
+    }
+
+    values.push(id);
+
+    const query=`UPDATE users SET ${feilds.join(", ")} WHERE id=?`;
+    await pool.query(query,values);
+
+    return getNode(id);
+}
 
 
-module.exports={getNode,getNodes,createNode}
+
+module.exports={getNode,getNodes,createNode,updateNode};
 
 // const [rows]=await pool.query("SELECT * FROM users");
 // console.log(rows);
