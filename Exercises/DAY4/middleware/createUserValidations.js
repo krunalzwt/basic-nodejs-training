@@ -1,7 +1,7 @@
 const createUserValidations = (req, res, next) => {
     const { id, email, age, role, isActive } = req.body;
   
-    if (!id || !email || !age || !role) {
+    if (!email || !age || !role) {
       return res.status(400).send("Missing required fields!");
     }
   

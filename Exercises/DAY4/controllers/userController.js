@@ -3,7 +3,7 @@ const path = require("path");
 const multer = require("multer");
 // const __dirname=path.resolve();
 const uploadsDir = path.join(__dirname, "./uploads");
-const { getNodes, getNode, createNode,updateNode } = require("../database/dbConnection");
+const { getNodes, getNode, createNode,updateNode,deleteNode } = require("../database/dbConnection");
 
 const root = (req, res) => {
   res.send("Welcome to the user Management API!");
@@ -64,6 +64,7 @@ const updateUserById = async(req, res) => {
 
     const updateUser=await updateNode(userId,{name,email,age,role,isActive});
     res.status(200).json(updateUser);
+    // res.status(200).send(`user updated ${JSON.stringify(updateUser)}`);
   }catch(err){
     console.error('Error updaing the user',err);
     res.status(500).send('Error upading the user!');
@@ -71,15 +72,20 @@ const updateUserById = async(req, res) => {
 };
 
 //idvalidationF
-const deleteUser = (req, res) => {
-  const userId = parseInt(req.params.id);
-  const userIndex = users.findIndex((u) => u.id === userId);
-
-  if (userIndex === -1) {
-    return res.send("user not found!!");
+const deleteUser = async(req, res) => {
+  try {
+    const userId = parseInt(req.params.id);
+    const user = await deleteNode(userId);
+    
+    if (!user) {
+      res.status(200).send("user deleted successfully!!");
+    } else {
+      res.status(404).send("User not found");
+    }
+  } catch (error) {
+    console.error("Error deleting users:", error);
+    res.status(500).send("Failed to delete users.");
   }
-  users.splice(userIndex, 1);
-  res.status(200).send("successfully deleted!!");
 };
 
 //img upload

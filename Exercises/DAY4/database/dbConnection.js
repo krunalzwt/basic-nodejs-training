@@ -9,6 +9,17 @@ const pool = mysql.createPool({
     database:process.env.MYSQL_DATABASE
 }).promise();
 
+pool.query(`CREATE TABLE IF NOT EXISTS
+    users (
+        id integer PRIMARY KEY AUTO_INCREMENT,
+        name VARCHAR(255) NOT NULL,
+        email VARCHAR(255),
+        age integer,
+        role VARCHAR(255),
+        isActive BOOLEAN
+    );`
+);
+
 const getNodes=async()=>{
     const[rows]=await pool.query("SELECT * FROM users")
     return rows
@@ -61,9 +72,14 @@ const updateNode=async(id,updates)=>{
     return getNode(id);
 }
 
+const deleteNode=async(id)=>{
+    const[rows]=await pool.query(`DELETE FROM users WHERE id = ?`,[id])
+    return rows[0]
+}
 
 
-module.exports={getNode,getNodes,createNode,updateNode};
+
+module.exports={getNode,getNodes,createNode,updateNode ,deleteNode};
 
 // const [rows]=await pool.query("SELECT * FROM users");
 // console.log(rows);

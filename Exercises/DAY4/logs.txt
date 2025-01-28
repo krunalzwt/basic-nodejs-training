@@ -274,3 +274,163 @@ Method: GET
 Timestamp: Tue Jan 28 2025 11:15:51 GMT+0530 (India Standard Time)
 Message: {"name":"Jay gthegh5tyh4t","email":"jay@gmail.com"}
 
+Method: PATCH
+Timestamp: Tue Jan 28 2025 11:18:01 GMT+0530 (India Standard Time)
+Message: {"name":"Jay eghethrt","email":"jay@gmail.com"}
+
+Method: PATCH
+Timestamp: Tue Jan 28 2025 11:18:36 GMT+0530 (India Standard Time)
+Message: {"name":"Jay eghethrt","email":"jay@gmail.com"}
+
+Method: PATCH
+Timestamp: Tue Jan 28 2025 11:18:53 GMT+0530 (India Standard Time)
+Message: {"name":"Jay dfhrgtjhertg","email":"jay@gmail.com"}
+
+Method: GET
+Timestamp: Tue Jan 28 2025 11:18:58 GMT+0530 (India Standard Time)
+Message: {"name":"Jay dfhrgtjhertg","email":"jay@gmail.com"}
+
+Method: PATCH
+Timestamp: Tue Jan 28 2025 11:20:18 GMT+0530 (India Standard Time)
+Message: {"name":"Jay adfwf","email":"jay@gmail.com"}
+
+Method: PATCH
+Timestamp: Tue Jan 28 2025 11:21:05 GMT+0530 (India Standard Time)
+Message: {"name":"Jay dwsf","email":"jay@gmail.com"}
+
+Method: GET
+Timestamp: Tue Jan 28 2025 11:21:23 GMT+0530 (India Standard Time)
+Message: {"name":"Jay dwsf","email":"jay@gmail.com"}
+
+Method: PATCH
+Timestamp: Tue Jan 28 2025 11:21:33 GMT+0530 (India Standard Time)
+Message: {"name":"Jay Patel","email":"jay@gmail.com"}
+
+Method: GET
+Timestamp: Tue Jan 28 2025 11:21:37 GMT+0530 (India Standard Time)
+Message: {"name":"Jay Patel","email":"jay@gmail.com"}
+
+Method: DELETE
+Timestamp: Tue Jan 28 2025 12:34:26 GMT+0530 (India Standard Time)
+Message: {"name":"Jay Patel","email":"jay@gmail.com"}
+
+Method: GET
+Timestamp: Tue Jan 28 2025 12:34:30 GMT+0530 (India Standard Time)
+Message: {"name":"Jay Patel","email":"jay@gmail.com"}
+
+Method: GET
+Timestamp: Tue Jan 28 2025 12:34:34 GMT+0530 (India Standard Time)
+Message: {"name":"Jay Patel","email":"jay@gmail.com"}
+
+Method: DELETE
+Timestamp: Tue Jan 28 2025 12:34:40 GMT+0530 (India Standard Time)
+Message: {"name":"Jay Patel","email":"jay@gmail.com"}
+
+Method: GET
+Timestamp: Tue Jan 28 2025 12:34:45 GMT+0530 (India Standard Time)
+Message: {"name":"Jay Patel","email":"jay@gmail.com"}
+
+Method: POST
+Timestamp: Tue Jan 28 2025 12:35:57 GMT+0530 (India Standard Time)
+Message: {"name":"Manan","email":"manan@gmail.com","age":20,"role":"User","isActive":1}
+
+Method: POST
+Timestamp: Tue Jan 28 2025 12:36:28 GMT+0530 (India Standard Time)
+Message: {"name":"Manan","email":"manan@gmail.com","age":20,"role":"User","isActive":1}
+
+Method: POST
+Timestamp: Tue Jan 28 2025 12:36:41 GMT+0530 (India Standard Time)
+Message: {"name":"Manan","email":"manan@gmail.com","age":20,"role":"User","isActive":"True"}
+
+Method: POST
+Timestamp: Tue Jan 28 2025 12:36:47 GMT+0530 (India Standard Time)
+Message: {"name":"Manan","email":"manan@gmail.com","age":20,"role":"User","isActive":"true"}
+
+Method: POST
+Timestamp: Tue Jan 28 2025 12:37:02 GMT+0530 (India Standard Time)
+Message: {"name":"Manan","email":"manan@gmail.com","age":20,"role":"User","isActive":"true"}
+
+Method: POST
+Timestamp: Tue Jan 28 2025 12:37:33 GMT+0530 (India Standard Time)
+Message: {"name":"Manan","email":"manan@gmail.com","age":20,"role":"User","isActive":"false"}
+
+Method: POST
+Timestamp: Tue Jan 28 2025 12:37:38 GMT+0530 (India Standard Time)
+Message: {"name":"Manan","email":"manan@gmail.com","age":20,"role":"User","isActive":"false"}
+
+Method: POST
+Timestamp: Tue Jan 28 2025 12:40:11 GMT+0530 (India Standard Time)
+Message: {"name":"jay","email":"jay@gmail.com","age":20,"role":"User","isActive":true}
+
+Method: POST
+Timestamp: Tue Jan 28 2025 12:40:38 GMT+0530 (India Standard Time)
+Message: {"name":"aarsh","email":"aarsh@gmail.com","age":20,"role":"User","isActive":true}
+
+Method: POST
+Timestamp: Tue Jan 28 2025 12:40:47 GMT+0530 (India Standard Time)
+Message: {"name":"manan","email":"manan@gmail.com","age":20,"role":"User","isActive":true}
+
+Method: GET
+Timestamp: Tue Jan 28 2025 12:40:50 GMT+0530 (India Standard Time)
+Message: {"name":"manan","email":"manan@gmail.com","age":20,"role":"User","isActive":true}
+
+Method: DELETE
+Timestamp: Tue Jan 28 2025 12:42:06 GMT+0530 (India Standard Time)
+Message: {"name":"manan","email":"manan@gmail.com","age":20,"role":"User","isActive":true}
+
+Method: GET
+Timestamp: Tue Jan 28 2025 12:42:12 GMT+0530 (India Standard Time)
+Message: {"name":"manan","email":"manan@gmail.com","age":20,"role":"User","isActive":true}
+
+Method: GET
+Timestamp: Tue Jan 28 2025 12:42:16 GMT+0530 (India Standard Time)
+Message: {"name":"manan","email":"manan@gmail.com","age":20,"role":"User","isActive":true}
+
+Method: DELETE
+Timestamp: Tue Jan 28 2025 12:45:11 GMT+0530 (India Standard Time)
+Message: {"name":"manan","email":"manan@gmail.com","age":20,"role":"User","isActive":true}
+
+Method: GET
+Timestamp: Tue Jan 28 2025 12:45:20 GMT+0530 (India Standard Time)
+Message: {"name":"manan","email":"manan@gmail.com","age":20,"role":"User","isActive":true}
+
+Method: GET
+Timestamp: Tue Jan 28 2025 12:45:37 GMT+0530 (India Standard Time)
+Message: {"name":"manan","email":"manan@gmail.com","age":20,"role":"User","isActive":true}
+
+Method: DELETE
+Timestamp: Tue Jan 28 2025 12:45:41 GMT+0530 (India Standard Time)
+Message: {"name":"manan","email":"manan@gmail.com","age":20,"role":"User","isActive":true}
+
+Method: GET
+Timestamp: Tue Jan 28 2025 12:45:45 GMT+0530 (India Standard Time)
+Message: {"name":"manan","email":"manan@gmail.com","age":20,"role":"User","isActive":true}
+
+Method: GET
+Timestamp: Tue Jan 28 2025 12:45:47 GMT+0530 (India Standard Time)
+Message: {"name":"manan","email":"manan@gmail.com","age":20,"role":"User","isActive":true}
+
+Method: DELETE
+Timestamp: Tue Jan 28 2025 12:45:57 GMT+0530 (India Standard Time)
+Message: {"name":"manan","email":"manan@gmail.com","age":20,"role":"User","isActive":true}
+
+Method: GET
+Timestamp: Tue Jan 28 2025 12:46:02 GMT+0530 (India Standard Time)
+Message: {"name":"manan","email":"manan@gmail.com","age":20,"role":"User","isActive":true}
+
+Method: GET
+Timestamp: Tue Jan 28 2025 12:46:49 GMT+0530 (India Standard Time)
+Message: {"name":"manan","email":"manan@gmail.com","age":20,"role":"User","isActive":true}
+
+Method: DELETE
+Timestamp: Tue Jan 28 2025 12:46:59 GMT+0530 (India Standard Time)
+Message: {"name":"manan","email":"manan@gmail.com","age":20,"role":"User","isActive":true}
+
+Method: GET
+Timestamp: Tue Jan 28 2025 12:47:03 GMT+0530 (India Standard Time)
+Message: {"name":"manan","email":"manan@gmail.com","age":20,"role":"User","isActive":true}
+
+Method: GET
+Timestamp: Tue Jan 28 2025 12:47:15 GMT+0530 (India Standard Time)
+Message: {"name":"manan","email":"manan@gmail.com","age":20,"role":"User","isActive":true}
+

@@ -10,7 +10,7 @@ const updateUserValidations = require('../middleware/updateUserValidations');
 
 router.route('/').get(root);
 router.route('/users').get(getAllUsers).post(createUserValidations,createUser);
-router.route('/users/:id').get(idValidation,getUserById).patch(idValidation,updateUserValidations,updateUserById).delete(idValidation,deleteUser);
+router.route('/users/:id').get(idValidation,getUserById).patch(idValidation,updateUserValidations,updateUserById).delete(deleteUser);
 router.route('/upload-image/:id').post(upload.single('profileImage'),uploadImg,handleError);
 
 module.exports=router;
