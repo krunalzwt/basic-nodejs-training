@@ -1,5 +1,6 @@
 const {pool} = require('./dbConnection');
 
+
 const getNodes=async()=>{
     const[rows]=await pool.query("SELECT * FROM users")
     return rows

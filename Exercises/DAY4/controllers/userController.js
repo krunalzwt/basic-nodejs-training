@@ -4,6 +4,7 @@ const multer = require("multer");
 // const __dirname=path.resolve();
 const uploadsDir = path.join(__dirname, "./uploads");
 const { getNodes, getNode, createNode,updateNode,deleteNode } = require("../database/usertableQueries.js");
+const {createNodeImg}=require("../database/imgTableQueries.js");
 
 const root = (req, res) => {
   res.send("Welcome to the user Management API!");
@@ -114,14 +115,16 @@ const upload = multer({
 const uploadImg =async(req, res) => {
   try{
     if (req.file) {
-      const { id } = req.params;
-      const user = await getNode(id);
-  
+      // const { id } = parseInt(req.params.id);
+      const id2=  req.params.id;
+      const id = parseInt(id2)
+      // console.log(id,req.file.filename, req.file.path, req.file.mimetype, path.extname(req.file.originalname), req.file.size);
+      const user = await createNodeImg(id,req.file.filename, req.file.path, req.file.mimetype, path.extname(req.file.originalname), req.file.size);
       if (!user) {
         return res.status(404).json({ error: "User not found!" });
       }
   
-      user.profilePath = req.file.path;
+      // user.profilePath = req.file.path;
       return res.status(200).json({ message: "Successfully uploaded!" });
     }
   
