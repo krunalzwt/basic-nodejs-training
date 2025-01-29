@@ -6,11 +6,13 @@ const createUserValidations = require('../middleware/createUserValidations');
 const updateUserValidations = require('../middleware/updateUserValidations');
 const { getUserById } = require('../controllers/userController');
 const { uploadImg, handleErrorImg,deleteUserImg, getUserImgById,getAllUsersImg,upload}=require('../controllers/userImgController.js');
+const validation=require('../middleware/validationMiddleware.js');
+const userProfileSchema=require('../Validations/userProfileValidations.js')
 
 
 
 router.route('/').get(root);
-router.route('/user-profile').get(getAllUsersProfile).post(idValidation,updateUserValidations,createUserProfile);
+router.route('/user-profile').get(getAllUsersProfile).post(idValidation,validation(userProfileSchema),updateUserValidations,createUserProfile);
 router.route('/user-profile/:id').get(getUserProfileById).put(updateUserProfile).delete(deleteUserProfile);
 router.route('/user-images').get(getAllUsersImg);
 router.route('/user-images/:id').delete(deleteUserImg).get(getUserImgById).post(upload.single('profileImage'),uploadImg,handleErrorImg);
