@@ -19,24 +19,28 @@ const createUserProfileQuery = async ({
   facebookUrl,
   instaUrl,
 }) => {
-  const [result] = await pool.query(
-    `INSERT INTO user_profiles (userId,bio,linkedInUrl,facebookUrl,instaUrl) VALUES (?,?,?,?,?)`,
-    [userId, bio, linkedInUrl, facebookUrl, instaUrl]
-  );
-  const id = result.insertId;
-  return getUserProfileByIdQuery(id);
+  try {
+    const [result] = await pool.query(
+      `INSERT INTO user_profiles (userId,bio,linkedInUrl,facebookUrl,instaUrl) VALUES (?,?,?,?,?)`,
+      [userId, bio, linkedInUrl, facebookUrl, instaUrl]
+    );
+    const id = result.insertId;
+    return getUserProfileByIdQuery(id);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const updateUserProfileQuery = async (id, updates) => {
   const fields = Object.keys(updates)
-    .filter(key => updates[key] !== undefined)
-    .map(key => `${key}=?`);
+    .filter((key) => updates[key] !== undefined)
+    .map((key) => `${key}=?`);
 
   if (fields.length === 0) {
     throw new Error("No fields provided for updates!");
   }
 
-  const values = Object.values(updates).filter(value => value !== undefined);
+  const values = Object.values(updates).filter((value) => value !== undefined);
   values.push(id);
 
   const query = `UPDATE user_profiles SET ${fields.join(", ")} WHERE id=?`;
@@ -45,8 +49,6 @@ const updateUserProfileQuery = async (id, updates) => {
   return getUserProfileByIdQuery(id);
 };
 
-
-
 const deleteUserProfileQuery = async (id) => {
   const [rows] = await pool.query(`DELETE FROM user_profiles WHERE id = ?`, [
     id,
@@ -54,4 +56,10 @@ const deleteUserProfileQuery = async (id) => {
   return rows[0];
 };
 
-module.exports = { getUsersProfileQuery, getUserProfileByIdQuery, createUserProfileQuery, updateUserProfileQuery, deleteUserProfileQuery };
+module.exports = {
+  getUsersProfileQuery,
+  getUserProfileByIdQuery,
+  createUserProfileQuery,
+  updateUserProfileQuery,
+  deleteUserProfileQuery,
+};

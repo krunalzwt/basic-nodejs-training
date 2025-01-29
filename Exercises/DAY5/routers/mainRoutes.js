@@ -10,7 +10,7 @@ const { uploadImg, handleErrorImg,deleteUserImg, getUserImgById,getAllUsersImg,u
 
 
 router.route('/').get(root);
-router.route('/user-profile').get(getAllUsersProfile).post(updateUserValidations,createUserProfile);
+router.route('/user-profile').get(getAllUsersProfile).post(idValidation,updateUserValidations,createUserProfile);
 router.route('/user-profile/:id').get(getUserProfileById).put(updateUserProfile).delete(deleteUserProfile);
 router.route('/user-images').get(getAllUsersImg);
 router.route('/user-images/:id').delete(deleteUserImg).get(getUserImgById).post(upload.single('profileImage'),uploadImg,handleErrorImg);
