@@ -6,7 +6,7 @@ const getUsersProfileQuery = async () => {
 };
 const getUserProfileByIdQuery = async (id) => {
   const [rows] = await pool.query(
-    `SELECT user_profiles.userId, users.name, users.email, users.age, user_profiles.bio, users.isActive, user_profiles.linkedInUrl,user_profiles.facebookUrl, user_profiles.instaUrl, users.createdAt, user_profiles.updatedAt FROM user_profiles JOIN users ON users.id = user_profiles.userId WHERE user_profiles.id = ?`,
+    `SELECT user_profiles.id,user_profiles.userId,user_profiles.bio,user_profiles.linkedInUrl,user_profiles.facebookUrl, user_profiles.instaUrl,user_profiles.updatedAt FROM user_profiles WHERE user_profiles.id = ?`,
     [id]
   );
   return rows[0];
@@ -20,45 +20,32 @@ const createUserProfileQuery = async ({
   instaUrl,
 }) => {
   const [result] = await pool.query(
-    `INSERT INTO user_profiles (userId,bio,linkedInUrl,facebookUrl,instaUrl) VALUES (?,?,?,?,?) WHERE NOT EXISTS (SELECT 1 FROM user_profiles WHERE userId=?)`,
+    `INSERT INTO user_profiles (userId,bio,linkedInUrl,facebookUrl,instaUrl) VALUES (?,?,?,?,?)`,
     [userId, bio, linkedInUrl, facebookUrl, instaUrl]
   );
   const id = result.insertId;
-  return getNode(id);
+  return getUserProfileByIdQuery(id);
 };
 
 const updateUserProfileQuery = async (id, updates) => {
-  const feilds = [];
-  const values = [];
+  const fields = Object.keys(updates)
+    .filter(key => updates[key] !== undefined)
+    .map(key => `${key}=?`);
 
-  if (updates.bio) {
-    feilds.push("bio=?");
-    values.push(updates.bio);
-  }
-  if (updates.linkedInUrl) {
-    feilds.push("linkedInUrl=?");
-    values.push(updates.linkedInUrl);
-  }
-  if (updates.facebookUrl) {
-    feilds.push("facebookUrl=?");
-    values.push(updates.instaUrl);
-  }
-  if (updates.instaUrl) {
-    feilds.push("instaUrl=?");
-    values.push(updates.instaUrl);
+  if (fields.length === 0) {
+    throw new Error("No fields provided for updates!");
   }
 
-  if (feilds.length === 0) {
-    throw new Error("no feilds provided for updates!");
-  }
-
+  const values = Object.values(updates).filter(value => value !== undefined);
   values.push(id);
 
-  const query = `UPDATE user_profiles SET ${feilds.join(", ")} WHERE id=?`;
+  const query = `UPDATE user_profiles SET ${fields.join(", ")} WHERE id=?`;
   await pool.query(query, values);
 
-  return getNode(id);
+  return getUserProfileByIdQuery(id);
 };
+
+
 
 const deleteUserProfileQuery = async (id) => {
   const [rows] = await pool.query(`DELETE FROM user_profiles WHERE id = ?`, [

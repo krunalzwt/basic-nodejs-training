@@ -66,7 +66,11 @@ const createUserProfile = async (req, res) => {
 const updateUserProfile = async (req, res) => {
   try {
     const { userId, bio, linkedInUrl, facebookUrl, instaUrl } = req.body;
-    const bodyId = parseInt(req.params.id);
+    const bodyId = parseInt(req.params.userId);
+
+    if(!bodyId){
+      return res.status(500).send('userId does not exists!');
+    }
 
     const updateUser = await updateUserProfileQuery(bodyId, {
       userId,

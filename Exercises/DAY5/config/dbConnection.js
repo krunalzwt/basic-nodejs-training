@@ -12,7 +12,7 @@ const pool = mysql.createPool({
 pool.query(
     `CREATE TABLE IF NOT EXISTS user_profiles (
       id INT AUTO_INCREMENT PRIMARY KEY,
-      userId INT,
+      userId INT UNIQUE,
       bio TEXT NOT NULL,
       linkedInUrl VARCHAR(255) NOT NULL,
       facebookUrl VARCHAR(255) NOT NULL,
