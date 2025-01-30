@@ -42,7 +42,7 @@ const userProfiles = sequelize.define('user_profiles', {
     });
 
     userProfiles.associate = (models) => {
-        userProfile.belongsTo(models.users, {
+        userProfiles.belongsTo(models.users, {
             foreignKey: 'userId',
             onDelete: 'CASCADE',
         });
