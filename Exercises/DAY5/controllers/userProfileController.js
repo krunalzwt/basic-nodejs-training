@@ -21,7 +21,7 @@ const getAllUsersProfile = async (req, res) => {
     res.json(users);  
   } catch (error) {
     console.error("Error fetching users:", error);
-    res.status(500).send("Failed to fetch users.");
+    return res.status(500).send("Failed to fetch users.");
   }
 };
 
@@ -37,7 +37,7 @@ const getUserProfileById = async (req, res) => {
     }
   } catch (error) {
     console.error("Error fetching users:", error);
-    res.status(500).send("Failed to fetch users.");
+    return res.status(500).send("Failed to fetch users.");
   }
 };
 
@@ -58,7 +58,7 @@ const createUserProfile = async (req, res) => {
     res.status(201).send(user);
   } catch (error) {
     console.error("Error creating user:", error);
-    res.status(500).send("Error creating user!");
+    return res.status(500).send("Error creating user!");
   }
 };
 
@@ -83,7 +83,7 @@ const updateUserProfile = async (req, res) => {
     // res.status(200).send(`user updated ${JSON.stringify(updateUser)}`);
   } catch (err) {
     console.error("Error updaing the user", err);
-    res.status(500).send("Error upading the user!");
+    return res.status(500).send("Error upading the user!");
   }
 };
 
@@ -100,7 +100,7 @@ const deleteUserProfile = async (req, res) => {
     }
   } catch (error) {
     console.error("Error deleting users:", error);
-    res.status(500).send("Failed to delete users.");
+    return res.status(500).send("Failed to delete users.");
   }
 };
 

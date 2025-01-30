@@ -1,5 +1,13 @@
 const { pool } = require("../config/dbConnection");
 
+
+//old code
+
+const getAllUsersQuery=async()=>{
+    const[rows]=await pool.query("SELECT * FROM users")
+    return rows
+}
+
 const getUsersByIdQuery = async (id) => {
   const [rows] = await pool.query(
     `SELECT 
@@ -11,4 +19,35 @@ const getUsersByIdQuery = async (id) => {
   return rows[0];
 };
 
-module.exports = { getUsersByIdQuery };
+const createUserQuery=async({name,email,age,role,isActive})=>{
+    const [result]=await pool.query(`INSERT INTO users (name,email,age,role,isActive) VALUES (?,?,?,?,?)`,[name,email,age,role,isActive])
+    const id=result.insertId;
+    return getUsersByIdQuery(id);
+}
+
+const updateUserQuery = async (id, updates) => {
+  const fields = Object.keys(updates)
+    .filter((key) => updates[key] !== undefined)
+    .map((key) => `${key}=?`);
+
+  if (fields.length === 0) {
+    throw new Error("No fields provided for updates!");
+  }
+
+  const values = Object.values(updates).filter((value) => value !== undefined);
+  values.push(id);
+
+  const query = `UPDATE users SET ${fields.join(", ")} WHERE id=?`;
+  await pool.query(query, values);
+
+  return getUsersByIdQuery(id);
+};
+
+const deleteUserQuery=async(id)=>{
+    const[rows]=await pool.query(`DELETE FROM users WHERE id = ?`,[id])
+    return rows[0]
+}
+
+
+
+module.exports={getAllUsersQuery,getUsersByIdQuery,createUserQuery,updateUserQuery ,deleteUserQuery};

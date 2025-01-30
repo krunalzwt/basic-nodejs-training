@@ -21,7 +21,7 @@ const getUserImgById = async (req, res) => {
     }
   } catch (error) {
     console.error("Error fetching users:", error);
-    res.status(500).send("Failed to fetch users.");
+    return res.status(500).send("Failed to fetch users.");
   }
 };
 
@@ -104,7 +104,7 @@ const deleteUserImg = async (req, res) => {
     }
   } catch (error) {
     console.error("Error deleting users:", error);
-    res.status(500).send("Failed to delete users.");
+    return res.status(500).send("Failed to delete users.");
   }
 };
 
@@ -114,7 +114,7 @@ const getAllUsersImg = async (req, res) => {
     res.json(users);
   } catch (error) {
     console.error("Error fetching users:", error);
-    res.status(500).send("Failed to fetch users.");
+    return res.status(500).send("Failed to fetch users.");
   }
 };
 
