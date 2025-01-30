@@ -1,9 +1,12 @@
 const { pool } = require("../config/dbConnection");
+const {userImages}=require('../models/userImages');
 
 const getAllUserImgQuery = async () => {
-  const [rows] = await pool.query("SELECT * FROM user_images");
+  const rows = await userImages.findAll();
   return rows;
 };
+
+// last task reminder : updatedAt column is not fount error
 
 const getUserImgQuery = async (userId) => {
   const [rows] = await pool.query(`SELECT * FROM user_images WHERE userId=?`,[userId]);
