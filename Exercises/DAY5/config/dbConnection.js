@@ -11,6 +11,7 @@ const pool = mysql
   })
   .promise();
 
+// user table creation query
 pool.query(
   `CREATE TABLE IF NOT EXISTS users 
   (id INT AUTO_INCREMENT PRIMARY KEY,
@@ -23,6 +24,7 @@ pool.query(
   updatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)`
 );
 
+// user_profiles
 pool.query(
   `CREATE TABLE IF NOT EXISTS user_profiles (
       id INT AUTO_INCREMENT PRIMARY KEY,
@@ -37,6 +39,7 @@ pool.query(
       );`
 );
 
+// user_images
 pool.query(
   `CREATE TABLE IF NOT EXISTS user_images (
       id INT AUTO_INCREMENT PRIMARY KEY,
@@ -53,5 +56,3 @@ pool.query(
 
 module.exports = { pool };
 
-// const [rows]=await pool.query("SELECT * FROM users");
-// console.log(rows);

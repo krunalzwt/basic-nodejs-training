@@ -9,6 +9,11 @@ const {
     deleteUserImgQuery,
 } = require("../services/userImgQueries");
 
+
+// user_images table functions
+
+
+// GET USER IMAGES BY ID
 const getUserImgById = async (req, res) => {
   try {
     const userId = parseInt(req.params.id);
@@ -25,6 +30,7 @@ const getUserImgById = async (req, res) => {
   }
 };
 
+// MULTER : FILENAME AND STORAGE FUNCTION
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, uploadsDir);
@@ -34,6 +40,7 @@ const storage = multer.diskStorage({
   },
 });
 
+// MULTER: FILESIZE,EXTENSION AND STORAGE VALIDATIONS
 const upload = multer({
   storage: storage,
   limits: { fileSize: 2 * 1024 * 1024 },
@@ -45,6 +52,7 @@ const upload = multer({
   },
 });
 
+// IMG UPLOADE FUNCTION
 const uploadImg = async (req, res) => {
   try {
     if (req.file) {
@@ -76,6 +84,7 @@ const uploadImg = async (req, res) => {
   }
 };
 
+// HANDLE ERROR FUNCTION FOR HANDLING THE ERRORS
 const handleErrorImg = (err, req, res, next) => {
   if (err instanceof multer.MulterError) {
     if (err.code === "LIMIT_FILE_SIZE") {
@@ -92,6 +101,7 @@ const handleErrorImg = (err, req, res, next) => {
   return res.status(500).json({ error: "An unexpected error occurred!" });
 };
 
+// DELETE THE USER IMG
 const deleteUserImg = async (req, res) => {
   try {
     const userId = parseInt(req.params.id);
@@ -108,6 +118,7 @@ const deleteUserImg = async (req, res) => {
   }
 };
 
+// GET ALL USER IMAGES
 const getAllUsersImg = async (req, res) => {
   try {
     const users = await getAllUserImgQuery();
