@@ -1,15 +1,14 @@
 const { pool } = require("../config/dbConnection");
+const { userProfiles } = require("../models/userProfile");
 
 const getUsersProfileQuery = async () => {
-  const [rows] = await pool.query("SELECT * FROM user_profiles");
+  const rows = await userProfiles.findAll();
   return rows;
 };
+
 const getUserProfileByIdQuery = async (id) => {
-  const [rows] = await pool.query(
-    `SELECT user_profiles.id,user_profiles.userId,user_profiles.bio,user_profiles.linkedInUrl,user_profiles.facebookUrl, user_profiles.instaUrl,user_profiles.updatedAt FROM user_profiles WHERE user_profiles.id = ?`,
-    [id]
-  );
-  return rows[0];
+  const rows = await userProfiles.findByPk(id);
+  return rows;
 };
 
 const createUserProfileQuery = async ({
@@ -19,41 +18,41 @@ const createUserProfileQuery = async ({
   facebookUrl,
   instaUrl,
 }) => {
-  try {
-    const [result] = await pool.query(
-      `INSERT INTO user_profiles (userId,bio,linkedInUrl,facebookUrl,instaUrl) VALUES (?,?,?,?,?)`,
-      [userId, bio, linkedInUrl, facebookUrl, instaUrl]
-    );
-    const id = result.insertId;
-    return getUserProfileByIdQuery(id);
-  } catch (error) {
-    console.log(error);
-  }
+  const result = await userProfiles.create({
+    userId,
+    bio,
+    linkedInUrl,
+    facebookUrl,
+    instaUrl,
+  });
+  // const id = result.insertId;
+  return result;
 };
 
 const updateUserProfileQuery = async (id, updates) => {
-  const fields = Object.keys(updates)
-    .filter((key) => updates[key] !== undefined)
-    .map((key) => `${key}=?`);
+  try {
+    if (typeof id !== "number" || isNaN(id)) {
+      throw new Error(`Invalid ID type: ${typeof id}`);
+    }
 
-  if (fields.length === 0) {
-    throw new Error("No fields provided for updates!");
+    const [updated] = await userProfiles.update(updates, {
+      where: { id },
+    });
+
+    if (updated === 0) {
+      return null;
+    }
+
+    return await userProfiles.findByPk(id);
+  } catch (error) {
+    console.error("Error updating user:", error);
+    throw error;
   }
-
-  const values = Object.values(updates).filter((value) => value !== undefined);
-  values.push(id);
-
-  const query = `UPDATE user_profiles SET ${fields.join(", ")} WHERE id=?`;
-  await pool.query(query, values);
-
-  return getUserProfileByIdQuery(id);
 };
 
 const deleteUserProfileQuery = async (id) => {
-  const [rows] = await pool.query(`DELETE FROM user_profiles WHERE id = ?`, [
-    id,
-  ]);
-  return rows[0];
+  const rows = await userProfiles.destroy({where:{id}});
+  return rows;
 };
 
 module.exports = {

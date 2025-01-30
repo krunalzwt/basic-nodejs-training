@@ -13,8 +13,8 @@ const { createUserSchema, updateUserSchema } = require('../Validations/userValid
 
 
 router.route('/').get(root);
-router.route('/user-profile').get(getAllUsersProfile).post(idValidation,validation(userProfileSchema),updateUserValidations,createUserProfile);
-router.route('/user-profile/:id').get(getUserProfileById).put(updateUserProfile).delete(deleteUserProfile);
+router.route('/user-profiles').get(getAllUsersProfile).post(validation(userProfileSchema),updateUserValidations,createUserProfile);
+router.route('/user-profiles/:id').get(getUserProfileById).put(updateUserProfile).delete(deleteUserProfile);
 router.route('/user-images').get(getAllUsersImg);
 router.route('/user-images/:id').delete(deleteUserImg).get(getUserImgById).post(upload.single('profileImage'),uploadImg,handleErrorImg);
 router.route('/users').get(getAllUsers).post(validation(createUserSchema),createUser);

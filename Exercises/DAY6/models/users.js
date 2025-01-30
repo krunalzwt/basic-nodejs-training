@@ -1,6 +1,5 @@
-const { DataTypes } = require('sequelize');
-const {sequelize} =require('../config/dbConnection.js');
- 
+const { DataTypes } = require("sequelize");
+const { sequelize } = require("../config/dbConnection.js");
 
 const users = sequelize.define("users", {
   id: {
@@ -17,18 +16,18 @@ const users = sequelize.define("users", {
     allowNull: false,
     unique: true,
   },
-  age:{
-    type:DataTypes.INTEGER,
-    allowNull:false,
+  age: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
   },
-  role:{
-    type:DataTypes.ENUM('Admin','User'),
-    allowNull:false
+  role: {
+    type: DataTypes.ENUM("Admin", "User"),
+    allowNull: false,
   },
-  isActive:{
-    type:DataTypes.BOOLEAN,
-    allowNull:false
-  }
+  isActive: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+  },
 });
 
 module.exports = users;

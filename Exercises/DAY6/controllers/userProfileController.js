@@ -1,7 +1,6 @@
 const path = require("path");
 const multer = require("multer");
 
-const uploadsDir = path.join(__dirname, "./uploads");
 const {
   getUsersProfileQuery,
   getUserProfileByIdQuery,
@@ -12,7 +11,7 @@ const {
 
 
 const root = (req, res) => {
-  res.send("Welcome to the user Management API!");
+  res.send("Welcome to the user Profile Management API!");
 };
 
 const getAllUsersProfile = async (req, res) => {
@@ -65,25 +64,22 @@ const createUserProfile = async (req, res) => {
 //idvalidationF
 const updateUserProfile = async (req, res) => {
   try {
-    const { userId, bio, linkedInUrl, facebookUrl, instaUrl } = req.body;
-    const bodyId = parseInt(req.params.userId);
+    const userId = parseInt(req.params.id, 10);
 
-    if(!bodyId){
-      return res.status(500).send('userId does not exists!');
+    if (isNaN(userId)) {
+      return res.status(400).json({ message: "Invalid user ID" });
     }
 
-    const updateUser = await updateUserProfileQuery(bodyId, {
-      userId,
-      bio,
-      linkedInUrl,
-      facebookUrl,
-      instaUrl,
-    });
-    res.status(200).json(updateUser);
-    // res.status(200).send(`user updated ${JSON.stringify(updateUser)}`);
+    const updatedUser = await updateUserProfileQuery(userId, req.body);
+    
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found or no changes made" });
+    }
+
+    return res.status(200).json(updatedUser);
   } catch (err) {
-    console.error("Error updaing the user", err);
-    return res.status(500).send("Error upading the user!");
+    console.error("Error updating the user:", err);
+    return res.status(500).json({ message: "Error updating the user!" });
   }
 };
 
