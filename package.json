@@ -10,7 +10,8 @@
     "day3": "node ./Exercises/DAY3/index.js",
     "dev3": "nodemon ./Exercises/DAY3/index.js",
     "day5": "nodemon ./Exercises/DAY5/index.js",
-    "day6": "nodemon ./Exercises/DAY6/index.js"
+    "day6": "nodemon ./Exercises/DAY6/index.js",
+    "day7": "nodemon ./Exercises/DAY7/index.js"
   },
   "repository": {
     "type": "git",
