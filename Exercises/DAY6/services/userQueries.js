@@ -1,8 +1,8 @@
 const { where } = require("sequelize");
 const { pool } = require("../config/dbConnection");
 const users = require("../models/users");
-const { userProfiles } = require("../models/userProfile");
-const { userImages } = require("../models/userImages");
+const userProfiles  = require("../models/userProfile");
+const userImages = require("../models/userImages");
 
 
 const getAllUsersQuery = async (req, res) => {
@@ -15,22 +15,28 @@ const getAllUsersQuery = async (req, res) => {
 };
 
 const getUsersByIdQuery = async (userId) => {
-    const rows = await users.findOne({
-      where: { id },
+  try {
+    const user = await users.findOne({
+      where: { id: userId },
       include: [
         {
-          model: userProfiles, 
-          attributes: ['bio', 'linkedInUrl', 'facebookUrl', 'instaUrl'], 
+          model: userProfiles,
+          attributes: ["bio","linkedInUrl","facebookUrl","instaUrl"],  
         },
         {
-          model: userImages, 
-          as: 'userImages', 
-          attributes: ['imageName'],
+          model: userImages,
+          attributes: ["imageName"],  
         },
       ],
     });
 
+    return user; 
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    return null;  
+  }
 };
+
 
 const createUserQuery = async ({ name, email, age, role, isActive }) => {
   const result = await users.create({name, email, age, role, isActive});

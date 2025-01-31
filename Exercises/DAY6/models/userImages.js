@@ -1,55 +1,51 @@
-const { DataTypes, STRING } = require('sequelize');
-const {sequelize}=require('../config/dbConnection');
-
-const userImages=sequelize.define('user_images',{
-    id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        unique: true,
-        autoIncrement: true,
-        primaryKey: true,
-    },
+const { DataTypes }=require("sequelize");
+const{ sequelize } = require("../config/dbConnection.js");
+const User = require("./users.js");
+ const UserImage = sequelize.define(
+  "UserImages",
+  {
     userId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        unique: true,
-        references: {
-            model: 'users',
-            key: 'id',
-        },
-        onDelete: 'CASCADE',
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: User,
+        key: "id",
+      },
+      onDelete: "CASCADE",
     },
-    imageName:{
-        type:DataTypes.STRING,
-        allowNull:false,
+    imageName: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
-    path:{
-        type:DataTypes.STRING,
-        allowNull:false,
+    path: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
-    mimeType:{
-        type:DataTypes.STRING,
-        allowNull:false,
+    mimeType: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
-    extension:{
-        type:DataTypes.STRING,
-        allowNull:false,
+    extension: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
-    size:{
-        type:DataTypes.INTEGER,
-        allowNull:false,
+    size: {
+      type: DataTypes.BIGINT,
+      allowNull: false,
     },
-},{
-    timestamps:true,
-    updatedAt:false,
-    tableName:'user_images',
+  },
+  {
+    tableName: "user_images",
+    timestamps: true,
+    createdAt: true,
+    updatedAt: false,
+  }
+);
+
+User.hasMany(UserImage, {
+  foreignKey: "userId",
+  onDelete: "CASCADE",
 });
+UserImage.belongsTo(User, { foreignKey: "userId" });
 
-userImages.associate = (models) => {
-    userImages.belongsTo(models.users, {
-        foreignKey: 'userId',
-        onDelete: 'CASCADE',
-    });
-};
-
-module.exports={userImages};
+module.exports=UserImage;

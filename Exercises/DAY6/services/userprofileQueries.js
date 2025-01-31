@@ -1,5 +1,5 @@
 const { pool } = require("../config/dbConnection");
-const { userProfiles } = require("../models/userProfile");
+const  userProfiles  = require("../models/userProfile");
 
 const getUsersProfileQuery = async () => {
   const rows = await userProfiles.findAll();

@@ -1,7 +1,7 @@
 const { where } = require("sequelize");
 const { pool } = require("../config/dbConnection");
-const {userImages}=require('../models/userImages');
-const { userProfiles } = require("../models/userProfile");
+const userImages=require('../models/userImages');
+const userProfiles  = require("../models/userProfile");
 
 const getAllUserImgQuery = async () => {
   const rows = await userImages.findAll();

@@ -1,51 +1,45 @@
-const { DataTypes } = require('sequelize');
-const {sequelize}=require('../config/dbConnection');
+const { DataTypes }= require("sequelize");
+const { sequelize }= require("../config/dbConnection");
+const User  =require("../models/users");
+const UserProfile = sequelize.define(
+  "UserProfile",
+  {
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: User,
+        key: "id",
+      },
+      onDelete: "CASCADE",
+    },
+    bio: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    linkedInUrl: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    facebookUrl: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    instaUrl: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+  },
+  {
+    tableName: "user_profiles",
+    timestamps: true,
+  }
+);
 
-const userProfiles = sequelize.define('user_profiles', {
-        id: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            unique: true,
-            autoIncrement: true,
-            primaryKey: true,
-        },
-        userId: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            unique: true,
-            references: {
-                model: 'users',
-                key: 'id',
-            },
-            onDelete: 'CASCADE',
-        },
-        bio: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-        linkedInUrl: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-        facebookUrl: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-        instaUrl: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-    }, {
-        timestamps: true,  // Add createdAt and updatedAt automatically
-        tableName: 'user_profiles',
+User.hasOne(UserProfile, {
+  foreignKey: "userId",
+  onDelete: "CASCADE",
+});
+UserProfile.belongsTo(User, { foreignKey: "userId" });
 
-    });
-
-    userProfiles.associate = (models) => {
-        userProfiles.belongsTo(models.users, {
-            foreignKey: 'userId',
-            onDelete: 'CASCADE',
-        });
-    };
-
-module.exports={userProfiles}
+module.exports=UserProfile;

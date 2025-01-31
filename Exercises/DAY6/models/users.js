@@ -1,23 +1,15 @@
-const { DataTypes } = require("sequelize");
-const { sequelize } = require("../config/dbConnection.js");
-const {userProfiles}=require('../models/userProfile.js');
-const {userImages}=require('../models/userImages.js');
+const { DataTypes } =require("sequelize");
+const { sequelize } =require("../config/dbConnection");
 
 
-const users = sequelize.define("users", {
-  id: {
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
-    primaryKey: true,
-  },
+ const User = sequelize.define("User", {
   name: {
-    type: DataTypes.STRING,
+    type: DataTypes.TEXT,
     allowNull: false,
   },
   email: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true,
   },
   age: {
     type: DataTypes.INTEGER,
@@ -29,23 +21,14 @@ const users = sequelize.define("users", {
   },
   isActive: {
     type: DataTypes.BOOLEAN,
-    allowNull: false,
+    defaultValue: true,
   },
-});
-
-users.associate = (models) => {
-  // User has one UserProfile (one-to-one)
-  users.hasOne(userProfiles, {
-      foreignKey: 'userId',
-      onDelete: 'CASCADE',
-  });
-
-  // User has many UserImages (one-to-many)
-  users.hasMany(userImages, {
-      foreignKey: 'userId',
-      onDelete: 'CASCADE',
-  });
-};
+},
+  {
+  tableName: "users",
+  timestamps: true,
+  },
+);
 
 
-module.exports = users;
+module.exports=User;

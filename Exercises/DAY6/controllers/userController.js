@@ -26,17 +26,24 @@ const getAllUsers = async (req, res) => {
 const getUserById = async (req, res) => {
   try {
     const userId = parseInt(req.params.id);
+    if (isNaN(userId)) {
+      return res.status(400).send("Invalid User ID");
+    }
+
     const user = await getUsersByIdQuery(userId);
+
     if (user) {
       res.status(200).json(user);
     } else {
       res.status(404).send("User not found");
     }
   } catch (error) {
-    console.error("Error fetching users:", error);
-    return res.status(500).send("Failed to fetch users.");
+    console.error("Error fetching user:", error);
+    return res.status(500).send("Failed to fetch user.");
   }
+  
 };
+
 
 // function to create a user
 const createUser = async (req, res) => {
