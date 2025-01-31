@@ -106,17 +106,23 @@ const deleteUserImg = async (req, res) => {
   try {
     const userId = parseInt(req.params.id);
 
-    if (userId) {
-      const user = await deleteUserImgQuery(userId);
-      res.status(200).send("user deleted successfully!!");
-    } else {
-      res.status(404).send("User not found");
+    if (!userId) {
+      return res.status(400).send("Invalid user ID");
     }
+
+    const user = await deleteUserImgQuery(userId);
+
+    if (!user || (Array.isArray(user) && user.length === 0)) {
+      return res.status(404).send("User not found");
+    }
+
+    res.status(200).send("User deleted successfully!!");
   } catch (error) {
     console.error("Error deleting users:", error);
     return res.status(500).send("Failed to delete users.");
   }
 };
+
 
 // GET ALL USER IMAGES
 const getAllUsersImg = async (req, res) => {

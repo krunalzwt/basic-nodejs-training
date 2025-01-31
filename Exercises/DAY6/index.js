@@ -13,7 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(logMiddleware);
 
 sequelize
-  .sync()
+  .sync({force:true})
   .then(() => console.log("Database connected and tables created"))
   .catch(err => console.error("database connection failed:", err));
 

@@ -1,5 +1,8 @@
 const { DataTypes } = require("sequelize");
 const { sequelize } = require("../config/dbConnection.js");
+const {userProfiles}=require('../models/userProfile.js');
+const {userImages}=require('../models/userImages.js');
+
 
 const users = sequelize.define("users", {
   id: {
@@ -29,5 +32,20 @@ const users = sequelize.define("users", {
     allowNull: false,
   },
 });
+
+users.associate = (models) => {
+  // User has one UserProfile (one-to-one)
+  users.hasOne(userProfiles, {
+      foreignKey: 'userId',
+      onDelete: 'CASCADE',
+  });
+
+  // User has many UserImages (one-to-many)
+  users.hasMany(userImages, {
+      foreignKey: 'userId',
+      onDelete: 'CASCADE',
+  });
+};
+
 
 module.exports = users;

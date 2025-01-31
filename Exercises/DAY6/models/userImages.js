@@ -36,11 +36,12 @@ const userImages=sequelize.define('user_images',{
         allowNull:false,
     },
     size:{
-        type:DataTypes.NUMBER,
+        type:DataTypes.INTEGER,
         allowNull:false,
     },
 },{
     timestamps:true,
+    updatedAt:false,
     tableName:'user_images',
 });
 

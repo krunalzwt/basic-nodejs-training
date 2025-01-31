@@ -1,6 +1,8 @@
 const { where } = require("sequelize");
 const { pool } = require("../config/dbConnection");
 const users = require("../models/users");
+const { userProfiles } = require("../models/userProfile");
+const { userImages } = require("../models/userImages");
 
 
 const getAllUsersQuery = async (req, res) => {
@@ -13,8 +15,21 @@ const getAllUsersQuery = async (req, res) => {
 };
 
 const getUsersByIdQuery = async (userId) => {
-    const rows = await users.findByPk(userId);
-    return rows;
+    const rows = await users.findOne({
+      where: { id },
+      include: [
+        {
+          model: userProfiles, 
+          attributes: ['bio', 'linkedInUrl', 'facebookUrl', 'instaUrl'], 
+        },
+        {
+          model: userImages, 
+          as: 'userImages', 
+          attributes: ['imageName'],
+        },
+      ],
+    });
+
 };
 
 const createUserQuery = async ({ name, email, age, role, isActive }) => {
