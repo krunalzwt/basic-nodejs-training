@@ -31,4 +31,11 @@ const updateUserSchema = yup.object({
   }),
 });
 
-module.exports = { createUserSchema, updateUserSchema };
+const loginuserSchema=yup.object({
+  body:yup.object({
+    username:yup.string().email().required(),
+    password:yup.string().required(),
+  })
+})
+
+module.exports = { createUserSchema, updateUserSchema , loginuserSchema };

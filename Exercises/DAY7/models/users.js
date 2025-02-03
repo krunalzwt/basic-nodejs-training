@@ -1,5 +1,6 @@
-const { DataTypes } =require("sequelize");
+const { DataTypes, STRING } =require("sequelize");
 const { sequelize } =require("../config/dbConnection");
+const bcrypt=require('bcrypt');
 
 
  const User = sequelize.define("User", {
@@ -10,6 +11,7 @@ const { sequelize } =require("../config/dbConnection");
   email: {
     type: DataTypes.STRING,
     allowNull: false,
+    unique:true,
   },
   age: {
     type: DataTypes.INTEGER,
@@ -23,6 +25,16 @@ const { sequelize } =require("../config/dbConnection");
     type: DataTypes.BOOLEAN,
     defaultValue: true,
   },
+  password:{
+    type:DataTypes.STRING,
+    allowNull:false,
+    set(value){
+      if(value){
+        const hash=bcrypt.hashSync(value,10);
+        this.setDataValue("password",hash);
+      }
+    }
+  }
 },
   {
   tableName: "users",
