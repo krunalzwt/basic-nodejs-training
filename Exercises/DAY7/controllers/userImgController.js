@@ -1,25 +1,38 @@
 const path = require("path");
 const multer = require("multer");
 const uploadsDir = path.join(__dirname, "../uploads");
+const userImages=require('../models/userImages');
+const userProfiles  = require("../models/userProfile");
 
-const {
-    getAllUserImgQuery,
-    getUserImgQuery,
-    createUserImgQuery,
-    deleteUserImgQuery,
-} = require("../services/userImgQueries");
+// const {
+//     getAllUserImgQuery,
+//     getUserImgQuery,
+//     createUserImgQuery,
+//     deleteUserImgQuery,
+// } = require("../services/userImgQueries");
 
 
 // user_images table functions
+
+// GET ALL USER IMAGES
+const getAllUsersImg = async (req, res) => {
+  try {
+    const users = await userImages.findAll();
+    res.json(users);
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    return res.status(500).send("Failed to fetch users.");
+  }
+};
 
 
 // GET USER IMAGES BY ID
 const getUserImgById = async (req, res) => {
   try {
     const userId = parseInt(req.params.id);
-    const user = await getUserImgQuery(userId);
+    const user = await userImages.findAll({where:{userId}});
 
-    if (user) {
+    if (user.length>0) {
       res.status(200).json(user);
     } else {
       res.status(404).send("User not found");
@@ -55,34 +68,37 @@ const upload = multer({
 // IMG UPLOADE FUNCTION
 const uploadImg = async (req, res) => {
   try {
-    if (req.file) {
-      // const { id } = parseInt(req.params.id);
-      const id2 = req.params.id;
-      const userId = parseInt(id2);
-      // console.log(id,req.file.filename, req.file.path, req.file.mimetype, path.extname(req.file.originalname), req.file.size);
-      const user = await createUserImgQuery(
-        userId,
-        req.file.filename,
-        req.file.path,
-        req.file.mimetype,
-        path.extname(req.file.originalname),
-        req.file.size
-      );
-      if (!user) {
-        return res.status(404).json({ error: "User not found!" });
-      }
-
-      // user.profilePath = req.file.path;
-      return res.status(200).json({ message: "Successfully uploaded!" });
+    if (!req.file) {
+      return res.status(400).json({ error: "No file uploaded or invalid file type!" });
     }
 
-    return res
-      .status(400)
-      .json({ error: "No file uploaded or invalid file type!" });
+    const userId = parseInt(req.params.id, 10);
+
+    if (isNaN(userId)) {
+      return res.status(400).json({ error: "Invalid user ID!" });
+    }
+    const userExists = await userProfiles.findOne({ where: { userId } });
+
+    if (!userExists) {
+      return res.status(404).json({ error: "User not found!" });
+    }
+
+    const userImage = await userImages.create({
+      userId: userId,
+      imageName: req.file.filename,
+      path: req.file.path,
+      mimeType: req.file.mimetype,
+      extension: path.extname(req.file.originalname),
+      size: req.file.size,
+    });
+
+    return res.status(200).json({ message: "Successfully uploaded!", userImage });
   } catch (err) {
-    console.error("err uploading a file", err);
+    console.error("Error uploading file:", err);
+    return res.status(500).json({ error: "Error uploading file!" });
   }
 };
+
 
 // HANDLE ERROR FUNCTION FOR HANDLING THE ERRORS
 const handleErrorImg = (err, req, res, next) => {
@@ -110,7 +126,7 @@ const deleteUserImg = async (req, res) => {
       return res.status(400).send("Invalid user ID");
     }
 
-    const user = await deleteUserImgQuery(userId);
+    const user = await userImages.destroy({where:{userId}});
 
     if (!user || (Array.isArray(user) && user.length === 0)) {
       return res.status(404).send("User not found");
@@ -123,17 +139,6 @@ const deleteUserImg = async (req, res) => {
   }
 };
 
-
-// GET ALL USER IMAGES
-const getAllUsersImg = async (req, res) => {
-  try {
-    const users = await getAllUserImgQuery();
-    res.json(users);
-  } catch (error) {
-    console.error("Error fetching users:", error);
-    return res.status(500).send("Failed to fetch users.");
-  }
-};
 
 module.exports = {
   uploadImg,

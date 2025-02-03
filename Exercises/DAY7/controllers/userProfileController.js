@@ -58,45 +58,48 @@ const createUserProfile = async (req, res) => {
   }
 };
 
-// task : updateUserProfile is not working...
-
 //idvalidationF
-const updateUserProfile = async (req, res,updates) => {
+const updateUserProfile = async (req, res) => {
   try {
     const userId = parseInt(req.body.userId, 10);
-    // console.log(userId)
+    const updates = { ...req.body };
+    delete updates.userId; // Ensure userId is not included in updates
 
     if (isNaN(userId)) {
       return res.status(400).json({ message: "Invalid user ID" });
     }
 
+    if (!updates || Object.keys(updates).length === 0) {
+      return res.status(400).json({ message: "No valid updates provided" });
+    }
+
+    const userExists = await userProfiles.findOne({ where: { userId } }); // Use userId instead of id
+    if (!userExists) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
     const [updated] = await userProfiles.update(updates, {
-      where: { userId },
+      where: { userId }, // Ensure updates are based on userId
+      individualHooks: true,
     });
 
     if (updated === 0) {
-      return res.status(404).json({ message: "User not found or no changes made" });
+      return res.status(400).json({ message: "No changes detected" });
     }
-    
-    if (!updatedUser) {
-      return res
-      .status(404)
-      .json({ message: "User not found or no changes made" });
-    }
-    
-    return await userProfiles.findByPk(userId);
-    // return res.status(200).json(updatedUser);
+
+    const updatedUser = await userProfiles.findOne({ where: { userId } }); // Retrieve updated user by userId
+    return res.status(200).json(updatedUser);
   } catch (err) {
-    console.error("Error updating the user:", err);
     return res.status(500).json({ message: "Error updating the user!" });
   }
 };
+
 
 //idvalidationF
 const deleteUserProfile = async (req, res) => {
   try {
     const id = parseInt(req.params.id);
-    const rows = await userProfiles.destroy({where:{id}});
+    const user = await userProfiles.destroy({where:{id}});
 
     if (!user) {
       res.status(200).send("user deleted successfully!!");
