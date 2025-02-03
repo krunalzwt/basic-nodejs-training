@@ -16,11 +16,11 @@ const authorizeUser = require('../middleware/authorizeUser.js');
 
 router.route('/').get(root);
 
-router.route('/user-profiles').get(getAllUsersProfile).post(validation(userProfileSchema),updateUserValidations,createUserProfile).patch(updateUserProfile);
-router.route('/user-profiles/:id').get(getUserProfileById).delete(deleteUserProfile);
+router.route('/user-profiles').get(authenticateUser,getAllUsersProfile).post(authenticateUser,authorizeUser,validation(userProfileSchema),updateUserValidations,createUserProfile).patch(authenticateUser,authorizeUser,updateUserProfile);
+router.route('/user-profiles/:id').get(authenticateUser,getUserProfileById).delete(authenticateUser,authorizeUser,deleteUserProfile);
 
-router.route('/user-images').get(getAllUsersImg);
-router.route('/user-images/:id').delete(deleteUserImg).get(getUserImgById).post(upload.single('profileImage'),uploadImg,handleErrorImg);
+router.route('/user-images').get(authenticateUser,getAllUsersImg);
+router.route('/user-images/:id').delete(authenticateUser,authorizeUser,deleteUserImg).get(authenticateUser,getUserImgById).post(authenticateUser,authorizeUser,upload.single('profileImage'),uploadImg,handleErrorImg);
 
 router.route('/users').get(authenticateUser,getAllUsers).post(authenticateUser,validation(createUserSchema),createUser);
 router.route('/users/:id').get(authenticateUser,getUserById).delete(authenticateUser,deleteUser).patch(authenticateUser,authorizeUser,validation(updateUserSchema),updateUserById);
