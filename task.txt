@@ -1,2 +1,1 @@
-// task : updateUserProfile is not working...(path: controller/userProfileController.js/from line:63)(reference: commented code in userProfileQuery.js in services folder)
-remaining : userProfileController.js from userProfileQuery.js
+remaining from phase;2 products in the routes of products and categories.
