@@ -23,7 +23,7 @@ router.route('/user-profiles/:id').get(authenticateUser,getUserProfileById).dele
 router.route('/user-images').get(authenticateUser,getAllUsersImg);
 router.route('/user-images/:id').delete(authenticateUser,authorizeUserProfile,deleteUserImg).get(authenticateUser,getUserImgById).post(authenticateUser,authorizeUserProfile,upload.single('profileImage'),uploadImg,handleErrorImg);
 
-router.route('/users').get(authenticateUser,getAllUsers).post(authenticateUser,validation(createUserSchema),createUser);
+router.route('/users').get(authenticateUser,getAllUsers).post(validation(createUserSchema),createUser);
 router.route('/users/:id').get(authenticateUser,getUserById).delete(authenticateUser,authorizeUser,deleteUser).patch(authenticateUser,authorizeUser,validation(updateUserSchema),updateUserById);
 
 router.route('/signup').post(validation(createUserSchema),createUser)
