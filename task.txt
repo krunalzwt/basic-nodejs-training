@@ -1,1 +1,10 @@
-remaining from phase;2 products in the routes of products and categories.
+remaining from phase 4 orderitems table is remaining and small validations are remaining 
+task: check if added items  in cart is available in stock or not?
+
+.env
+
+#eCommarceApi:
+MYSQL_HOST2='localhost'
+MYSQL_USER2='root'
+MYSQL_PASSWORD2='krunalbalas'
+MYSQL_DATABASE2='eCommerce'

@@ -24,6 +24,9 @@ sequelize
   app.use("/api",require("./src/routers/authRoutes.js")); 
   app.use("/api",require("./src/routers/userRoutes.js"));
   app.use('/api',require('./src/routers/productAndCategoriesRoutes.js'));
+  app.use('/api',require('./src/routers/cartAndWishlistRoutes.js'));
+  app.use('/api',require('./src/routers/orderProcessingRoutes.js'));
+
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

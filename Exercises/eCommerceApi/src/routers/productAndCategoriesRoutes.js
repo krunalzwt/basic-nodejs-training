@@ -1,8 +1,7 @@
 const express=require('express');
+const router=express.Router();
 const { getAllCategories, createCategories, upload, createProduct, getAllProducts, getProductById, updateProductById, deleteProduct } = require('../controllers/productAndCategoriesController');
 const authorizeAdmin = require('../middleware/authorizeAdmin');
-const { route } = require('./authRoutes');
-const router=express.Router();
 
 router.route('/categories').get(getAllCategories).post(authorizeAdmin,createCategories);
 

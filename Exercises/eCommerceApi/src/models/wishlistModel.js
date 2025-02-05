@@ -24,6 +24,7 @@ const wishlist = sequelize.define(
     product_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      unique:true,
       references: {
         model: products,
         key: "id",
