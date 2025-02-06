@@ -9,6 +9,7 @@ const validation=require('../middleware/validationMiddleware');
 const { createCategorySchema, createProductSchema, updateProductSchema } = require('../Validations/productAndCategoryValidations');
 const { createCartSchema, createWishlistSchema } = require('../Validations/cartAndWishlistValidations');
 const { updateStatusSchema } = require('../Validations/ordersValidations');
+const { idValidationSchema } = require('../Validations/idValidationSchema');
 
 
 
@@ -18,25 +19,25 @@ router.route('/categories').get(getAllCategories).post(authorizeAdmin,validation
 
 router.route('/products').get(getAllProducts).post(authorizeAdmin,upload.single('productPicture'),validation(createProductSchema),createProduct);
 
-router.route('/products/:id').get(getProductById).patch(authorizeAdmin,upload.single('productPicture'),validation(updateProductSchema),updateProductById).delete(authorizeAdmin,deleteProduct);
+router.route('/products/:id').get(validation(idValidationSchema),getProductById).patch(authorizeAdmin,validation(idValidationSchema),upload.single('productPicture'),validation(updateProductSchema),updateProductById).delete(authorizeAdmin,validation(idValidationSchema),deleteProduct);
 
 
 // cart and wishlist routes
 router.route('/cart').get(authorizeCustomer,getCartItems).post(authorizeCustomer,validation(createCartSchema),addCartIteams);
 
-router.route('/cart/:id').delete(authorizeCustomer,removeIteamsInCart);
+router.route('/cart/:id').delete(authorizeCustomer,validation(idValidationSchema),removeIteamsInCart);
 
 router.route('/wishlist').get(authorizeCustomer,getWishList).post(authorizeCustomer,validation(createWishlistSchema),addItemsInWishlist);
 
-router.route('/wishlist/:id').delete(authorizeCustomer,removeItemsFromWishlist);
+router.route('/wishlist/:id').delete(authorizeCustomer,validation(idValidationSchema),removeItemsFromWishlist);
 
 
 // order processing routes
 router.route('/orders').get(authorizeCustomer,getAllOrders).post(authorizeCustomer,placeNewOrder);
 
-router.route('/orders/:id').get(authorizeCustomer,getOrderDetailsById);
+router.route('/orders/:id').get(authorizeCustomer,validation(idValidationSchema),getOrderDetailsById);
 
-router.route('/orders/:id/status').put(authorizeCustomer,validation(updateStatusSchema),updateOrderStatus);
+router.route('/orders/:id/status').put(authorizeCustomer,validation(idValidationSchema),validation(updateStatusSchema),updateOrderStatus);
 
 
 
