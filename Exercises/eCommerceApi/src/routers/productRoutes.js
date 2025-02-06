@@ -37,7 +37,7 @@ router.route('/orders').get(authorizeCustomer,getAllOrders).post(authorizeCustom
 
 router.route('/orders/:id').get(authorizeCustomer,validation(idValidationSchema),getOrderDetailsById);
 
-router.route('/orders/:id/status').put(authorizeCustomer,validation(idValidationSchema),validation(updateStatusSchema),updateOrderStatus);
+router.route('/orders/:id/status').put(authorizeAdmin,validation(idValidationSchema),validation(updateStatusSchema),updateOrderStatus);
 
 
 
