@@ -2,10 +2,3 @@ remaining from phase 4 orderitems table is remaining and small validations are r
 task: check if added items  in cart is available in stock or not?
 task:user should not allowed to update their role
 
-.env
-
-#eCommarceApi:
-MYSQL_HOST2='localhost'
-MYSQL_USER2='root'
-MYSQL_PASSWORD2='krunalbalas'
-MYSQL_DATABASE2='eCommerce'
