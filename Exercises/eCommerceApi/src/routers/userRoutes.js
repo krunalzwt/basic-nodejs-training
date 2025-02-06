@@ -10,8 +10,7 @@ const validation = require('../middleware/validationMiddleware');
 
 router.route('/users').get(authorizeAdmin,getAllUsers)
 
-router.route('/users/profile').get(authMiddleware,getUserById)
-
-router.route('/users/profile').put(authMiddleware,validation(updateUserSchema),updateUserById);   
+router.route('/users/profile').get(authMiddleware,getUserById).put(authMiddleware,validation(updateUserSchema),updateUserById);
+ 
     
 module.exports=router;
