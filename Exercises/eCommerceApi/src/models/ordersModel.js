@@ -34,7 +34,7 @@ const orders = sequelize.define(
     timestamps: true,
     indexes: [
       {
-        fields: ["user_id"], // Keeping index for performance (not unique)
+        fields: ["user_id"], 
       },
     ],
   }

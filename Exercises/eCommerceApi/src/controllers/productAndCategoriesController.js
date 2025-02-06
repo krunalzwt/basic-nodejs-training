@@ -138,7 +138,6 @@ const getProductById = async (req, res) => {
     }
     return res.json(rows);
   } catch (error) {
-    // console.error("Error fetching products:", error);
     return res.status(500).send("Failed to fetch products.");
   }
 };

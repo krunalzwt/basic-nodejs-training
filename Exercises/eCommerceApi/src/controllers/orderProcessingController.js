@@ -14,7 +14,6 @@ const getAllOrders = async (req, res) => {
     }
     return res.json(rows);
   } catch (error) {
-    console.error("Error fetching categories:", error);
     return res.status(500).send("Failed to fetch all orders.");
   }
 };
@@ -23,17 +22,15 @@ const getAllOrders = async (req, res) => {
 
 const placeNewOrder = async (req, res) => {
   try {
-    // Extract user ID from token
+
     const token = req.headers.authorization?.replace("Bearer ", "");
     const decodedtoken = jwt.verify(token, secret);
     const userIdFromToken = decodedtoken.id;
 
-    // Check if the user ID is valid
     if (isNaN(userIdFromToken)) {
       return res.status(400).send("Invalid User ID");
     }
 
-    // Get cart data for the user
     const cartData = await cart.findAll({
       where: { user_id: userIdFromToken },
       include: [
@@ -58,7 +55,7 @@ const placeNewOrder = async (req, res) => {
       return sum + item.quantity;
     }, 0);
 
-    // Check product stock availability
+    // Check total stock of required product 
     const productId = cartData[0].product_id;
     const product = await products.findByPk(productId);
     const availableStock = product.stock;
@@ -67,15 +64,13 @@ const placeNewOrder = async (req, res) => {
       return res.status(403).send("Required stock is not available, please remove some items!");
     }
 
-    // Create a new order
     const orderTableData = await orders.create({
       user_id: userIdFromToken,
       total_price: totalSum,
     });
 
-    // Create order items for the newly created order
     const orderItemsData = await orderItems.create({
-      order_id: orderTableData.id,  // Use the newly created order ID
+      order_id: orderTableData.id,  
       product_id: parseInt(cartData[0].product_id),
       quantity: totalQuantity,
       price: parseInt(cartData[0].product?.price),
@@ -93,14 +88,12 @@ const placeNewOrder = async (req, res) => {
       where: { user_id: userIdFromToken },
     });
 
-    // Return a response with order confirmation
     return res.status(201).json({
       confirmation: "Order has been placed!",
       orderDetails: orderItemsData,
       total_amount: orderTableData,
     });
   } catch (error) {
-    console.error(error);  // Log the error for debugging
     return res.status(500).send({ message: "An error occurred", error: error.message });
   }
 };
@@ -123,8 +116,7 @@ const getOrderDetailsById = async (req, res) => {
     }
 
     return res.status(200).send(orderDetails);
-  } catch (error) {
-    console.error(error);  
+  } catch (error) { 
     return res.status(500).send({ message: "An error occurred", error: error.message });
   }
 };
