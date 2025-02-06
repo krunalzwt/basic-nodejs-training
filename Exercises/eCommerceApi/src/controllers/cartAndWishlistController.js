@@ -34,6 +34,8 @@ const getCartItems = async (req, res) => {
   }
 };
 
+// ADD ITEMS IN THE CART
+
 const addCartIteams = async (req, res) => {
   try {
     const { product_id, quantity } = req.body;
@@ -52,24 +54,44 @@ const addCartIteams = async (req, res) => {
     if (isNaN(userIdFromToken)) {
       return res.status(400).send("Invalid User ID");
     }
-    const result = await cart.create({
-      user_id: userIdFromToken,
-      product_id,
-      quantity,
+
+    const existingCartItem = await cart.findOne({
+      where: { user_id: userIdFromToken, product_id },
     });
-    return res.status(201).json(result);
+
+    if (existingCartItem) {
+      const updatedQuantity = parseInt(existingCartItem.quantity) + parseInt(quantity);
+      await cart.update(
+        { quantity: updatedQuantity },
+        { where: { id: existingCartItem.id } }
+      );
+
+      return res.status(200).json({ message: "Cart updated successfully!" });
+    } else {
+
+      const result = await cart.create({
+        user_id: userIdFromToken,
+        product_id,
+        quantity,
+      });
+
+      return res.status(201).json(result);
+    }
   } catch (error) {
     return res.status(500).send(error);
   }
 };
 
+// REMOVE ITEMS FROM THE CART WITH PRODUCT ID (i.e : I WANT TO REMOVE THIS PARTICULAR ITEM(product_id))
 const removeIteamsInCart = async (req, res) => {
   try {
     const id = parseInt(req.params.id);
     const token = req.headers.authorization?.replace("Bearer ", "");
     const decodedtoken = jwt.verify(token, secret);
     const userIdFromToken = decodedtoken.id;
-    const product = await cart.destroy({ where: { product_id: id , user_id:userIdFromToken } });
+    const product = await cart.destroy({
+      where: { product_id: id, user_id: userIdFromToken },
+    });
     if (!product) {
       return res
         .status(404)
@@ -149,13 +171,17 @@ const addItemsInWishlist = async (req, res) => {
   }
 };
 
+// REMOVE ITEM FROM WISHLIST WITH PRODUCT_ID
+
 const removeItemsFromWishlist = async (req, res) => {
   try {
     const id = parseInt(req.params.id);
     const token = req.headers.authorization?.replace("Bearer ", "");
     const decodedtoken = jwt.verify(token, secret);
     const userIdFromToken = decodedtoken.id;
-    const product = await cart.destroy({ where: { product_id: id , user_id:userIdFromToken} });
+    const product = await cart.destroy({
+      where: { product_id: id, user_id: userIdFromToken },
+    });
     if (!product) {
       return res
         .status(404)
