@@ -14,7 +14,6 @@ const orders = sequelize.define(
     user_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      unique:true,
       references: {
         model: users,
         key: "id",
@@ -33,6 +32,11 @@ const orders = sequelize.define(
   {
     tableName: "orders",
     timestamps: true,
+    indexes: [
+      {
+        fields: ["user_id"], // Keeping index for performance (not unique)
+      },
+    ],
   }
 );
 

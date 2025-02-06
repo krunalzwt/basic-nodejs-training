@@ -1,5 +1,6 @@
 remaining from phase 4 orderitems table is remaining and small validations are remaining 
 task: check if added items  in cart is available in stock or not?
+task:user should not allowed to update their role
 
 .env
 
