@@ -4,10 +4,11 @@ const uploadsDir = path.join(__dirname, "../../uploads");
 const products = require("../models/productsModel");
 const categories = require("../models/categoriesModel");
 const fs = require("fs");
+const { Op } = require('sequelize'); 
 
 const getAllCategories = async (req, res) => {
   try {
-    const rows = await categories.findAll();
+    const rows = await categories.findAll({attributes:["id","name"]});
     if (rows.length === 0) {
       return res.status(404).json({ error: "No categories found" });
     }
@@ -36,7 +37,22 @@ const createCategories = async (req, res) => {
 
 const getAllProducts = async (req, res) => {
   try {
+    const { minPrice, maxPrice, sortBy } = req.query; 
+
+    let whereClause = {}; 
+
+    if (minPrice && maxPrice) {
+      whereClause.price = {
+        [Op.between]: [parseFloat(minPrice), parseFloat(maxPrice)],
+      };
+    } else if (minPrice) {
+      whereClause.price = { [Op.gte]: parseFloat(minPrice) };
+    } else if (maxPrice) {
+      whereClause.price = { [Op.lte]: parseFloat(maxPrice) };
+    }
+
     const rows = await products.findAll({
+      where:whereClause,
       attributes: [
         "id",
         "name",
@@ -47,9 +63,11 @@ const getAllProducts = async (req, res) => {
         "image_url",
       ],
     });
+
     if (rows.length === 0) {
       return res.status(404).json({ error: "No products found" });
     }
+
     return res.json(rows);
   } catch (error) {
     console.error("Error fetching products:", error);
@@ -93,6 +111,11 @@ const createProduct = async (req, res) => {
     });
     return res.status(201).json(result);
   } catch (error) {
+    if (error.name === 'SequelizeForeignKeyConstraintError') {
+      return res.status(400).json({
+          message: `provided category does't exists! please enter id from available categories!!.`,
+      });
+  }
     return res.status(500).send(error);
   }
 };
@@ -144,7 +167,10 @@ const updateProductById = async (req, res) => {
     }
 
     if (req.file && product.image_url) {
-      const oldImagePath = path.join(uploadsDir, path.basename(product.image_url));
+      const oldImagePath = path.join(
+        uploadsDir,
+        path.basename(product.image_url)
+      );
       if (fs.existsSync(oldImagePath)) {
         fs.unlinkSync(oldImagePath);
       }
@@ -153,7 +179,9 @@ const updateProductById = async (req, res) => {
     const [rows] = await products.update(updateQuery, { where: { id } });
 
     if (rows === 0) {
-      return res.status(404).json({ error: "product with this id is not available!" });
+      return res
+        .status(404)
+        .json({ error: "product with this id is not available!" });
     }
 
     return res.json({
@@ -182,7 +210,7 @@ const deleteProduct = async (req, res) => {
       }
     }
     const productDelete = await products.destroy({ where: { id } });
-    
+
     res.status(200).send("product deleted successfully!!");
   } catch (error) {
     console.error("Error deleting product:", error);

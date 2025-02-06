@@ -1,8 +1,14 @@
 const yup = require("yup");
 const createUserSchema = yup.object({
   body: yup.object({
-    first_name: yup.string().required("first_name is required"),
-    last_name: yup.string().required("last_name is required"),
+    first_name: yup
+      .string()
+      .matches(/^[A-Za-z]+$/, 'invalid format:remove spaces,digits or special symbols from first name')
+      .required("first name is required"),
+    last_name: yup
+      .string()
+      .matches(/^[A-Za-z]+$/, 'invalid format:remove spaces,digits or special symbols from last name')
+      .required("last name is required"),
     email: yup.string().email().required("email is required"),
     password: yup.string().required(),
     role: yup

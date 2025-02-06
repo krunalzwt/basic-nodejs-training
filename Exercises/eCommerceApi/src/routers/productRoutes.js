@@ -8,6 +8,7 @@ const { getAllOrders, placeNewOrder, getOrderDetailsById, updateOrderStatus } = 
 const validation=require('../middleware/validationMiddleware');
 const { createCategorySchema, createProductSchema, updateProductSchema } = require('../Validations/productAndCategoryValidations');
 const { createCartSchema, createWishlistSchema } = require('../Validations/cartAndWishlistValidations');
+const { updateStatusSchema } = require('../Validations/ordersValidations');
 
 
 
@@ -15,9 +16,9 @@ const { createCartSchema, createWishlistSchema } = require('../Validations/cartA
 // product and categories routes
 router.route('/categories').get(getAllCategories).post(authorizeAdmin,validation(createCategorySchema),createCategories);
 
-router.route('/products').get(getAllProducts).post(authorizeAdmin,validation(createProductSchema),upload.single('productPicture'),createProduct);
+router.route('/products').get(getAllProducts).post(authorizeAdmin,upload.single('productPicture'),validation(createProductSchema),createProduct);
 
-router.route('/products/:id').get(getProductById).patch(authorizeAdmin,validation(updateProductSchema),upload.single('productPicture'),updateProductById).delete(authorizeAdmin,deleteProduct);
+router.route('/products/:id').get(getProductById).patch(authorizeAdmin,upload.single('productPicture'),validation(updateProductSchema),updateProductById).delete(authorizeAdmin,deleteProduct);
 
 
 // cart and wishlist routes
@@ -35,7 +36,7 @@ router.route('/orders').get(authorizeCustomer,getAllOrders).post(authorizeCustom
 
 router.route('/orders/:id').get(authorizeCustomer,getOrderDetailsById);
 
-router.route('/orders/:id/status').put(authorizeCustomer,updateOrderStatus);
+router.route('/orders/:id/status').put(authorizeCustomer,validation(updateStatusSchema),updateOrderStatus);
 
 
 

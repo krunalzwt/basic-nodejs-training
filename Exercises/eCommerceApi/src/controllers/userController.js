@@ -56,6 +56,10 @@ const updateUserById = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
+    if (updates.role && user.role !== "admin") {
+      return res.status(403).json({ message: "Only admins can update roles" });
+    }
+
     const [updated] = await users.update(updates, {
       where: { id: user.id },
     });
