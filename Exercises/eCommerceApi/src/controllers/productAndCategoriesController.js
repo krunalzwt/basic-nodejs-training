@@ -57,16 +57,6 @@ const getAllProducts = async (req, res) => {
   }
 };
 
-// CREATE PRODUCT...
-// MULTER : FILENAME AND STORAGE FUNCTION
-
-// const createUploadDir = (dir) => {
-//   if (!fs.existsSync(uploadsDir)) {
-//     fs.mkdirSync(uploadsDir, { recursive: true });
-//   }
-//   return uploadsDir;
-// };
-
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     if (!fs.existsSync(uploadsDir)) {
@@ -163,7 +153,7 @@ const updateProductById = async (req, res) => {
     const [rows] = await products.update(updateQuery, { where: { id } });
 
     if (rows === 0) {
-      return res.status(404).json({ error: "id is not available!" });
+      return res.status(404).json({ error: "product with this id is not available!" });
     }
 
     return res.json({

@@ -19,7 +19,7 @@ const updateUserSchema = yup.object({
     email: yup.string().email().optional(),
     role: yup
       .string()
-      .oneOf(["User", "Admin"], 'role must be from ["User", "Admin"]')
+      .oneOf(["customer", "admin"], 'role must be from ["customer", "admin"]')
       .optional(),
   }),
   password: yup.string().optional(),

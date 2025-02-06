@@ -4,7 +4,7 @@ const { root, getAllUsers, getUserById, updateUserById } = require('../controlle
 const authMiddleware=require('../middleware/authMiddleware');
 const authorizeUser=require('../middleware/authorizeUser');
 const authorizeAdmin = require('../middleware/authorizeAdmin');
-const { createUserSchema, updateUserSchema } = require('../../Validations/userValidations');
+const { createUserSchema, updateUserSchema } = require('../Validations/userValidations');
 const validation = require('../middleware/validationMiddleware');
 
 

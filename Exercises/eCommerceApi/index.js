@@ -23,9 +23,7 @@ sequelize
   app.get('/',root);
   app.use("/api",require("./src/routers/authRoutes.js")); 
   app.use("/api",require("./src/routers/userRoutes.js"));
-  app.use('/api',require('./src/routers/productAndCategoriesRoutes.js'));
-  app.use('/api',require('./src/routers/cartAndWishlistRoutes.js'));
-  app.use('/api',require('./src/routers/orderProcessingRoutes.js'));
+  app.use('/api',require('./src/routers/productRoutes.js'));
 
 
 app.listen(port, () => {
