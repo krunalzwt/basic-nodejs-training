@@ -10,6 +10,7 @@ const { createCategorySchema, createProductSchema, updateProductSchema } = requi
 const { createCartSchema, createWishlistSchema } = require('../Validations/cartAndWishlistValidations');
 const { updateStatusSchema } = require('../Validations/ordersValidations');
 const { idValidationSchema } = require('../Validations/idValidationSchema');
+const authMiddleware=require('../middleware/authMiddleware');
 
 
 
@@ -23,13 +24,13 @@ router.route('/products/:id').get(validation(idValidationSchema),getProductById)
 
 
 // cart and wishlist routes
-router.route('/cart').get(authorizeCustomer,getCartItems).post(authorizeCustomer,validation(createCartSchema),addCartIteams);
+router.route('/cart').get(authorizeCustomer,authMiddleware,getCartItems).post(authorizeCustomer,authMiddleware,validation(createCartSchema),addCartIteams);
 
-router.route('/cart/:id').delete(authorizeCustomer,validation(idValidationSchema),removeIteamsInCart);
+router.route('/cart/:id').delete(authorizeCustomer,authMiddleware,validation(idValidationSchema),removeIteamsInCart);
 
-router.route('/wishlist').get(authorizeCustomer,getWishList).post(authorizeCustomer,validation(createWishlistSchema),addItemsInWishlist);
+router.route('/wishlist').get(authorizeCustomer,authMiddleware,getWishList).post(authorizeCustomer,authMiddleware,validation(createWishlistSchema),addItemsInWishlist);
 
-router.route('/wishlist/:id').delete(authorizeCustomer,validation(idValidationSchema),removeItemsFromWishlist);
+router.route('/wishlist/:id').delete(authorizeCustomer,authMiddleware,validation(idValidationSchema),removeItemsFromWishlist);
 
 
 // order processing routes

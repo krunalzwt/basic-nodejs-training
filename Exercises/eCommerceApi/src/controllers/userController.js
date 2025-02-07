@@ -1,6 +1,4 @@
-const jwt = require("jsonwebtoken");
 const users = require("../models/usersModel");
-const secret = "abc$@123$";
 
 const root = (req, res) => {
   res.send("Welcome to the eCommerce Project!");
@@ -21,9 +19,7 @@ const getAllUsers = async (req, res) => {
 
 const getUserById = async (req, res) => {
   try {
-    const token = req.headers.authorization?.replace("Bearer ", "");
-    const decodedtoken = jwt.verify(token, secret);  
-    const userIdFromToken = decodedtoken.id;
+    const userIdFromToken = req.user.id;
     if (isNaN(userIdFromToken)) {
       return res.status(400).send("Invalid User ID");
     }
@@ -41,9 +37,7 @@ const getUserById = async (req, res) => {
 
 const updateUserById = async (req, res) => {
   try {
-    const token = req.headers.authorization?.replace("Bearer ", "");
-    const decodedtoken = jwt.verify(token, secret);  
-    const userIdFromToken = decodedtoken.id;
+    const userIdFromToken = req.user.id;
 
     if (isNaN(userIdFromToken)) {
       return res.status(400).json({ message: "Invalid user ID" });

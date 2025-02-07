@@ -1,6 +1,4 @@
-const jwt = require("jsonwebtoken");
 const users = require("../models/usersModel");
-const secret = "abc$@123$";
 const cart = require("../models/cartModel");
 const products = require("../models/productsModel");
 const wishlist = require("../models/wishlistModel");
@@ -9,9 +7,7 @@ const wishlist = require("../models/wishlistModel");
 
 const getCartItems = async (req, res) => {
   try {
-    const token = req.headers.authorization?.replace("Bearer ", "");
-    const decodedtoken = jwt.verify(token, secret);
-    const userIdFromToken = decodedtoken.id;
+    const userIdFromToken = parseInt(req.user.id);
     if (isNaN(userIdFromToken)) {
       return res.status(400).send("Invalid User ID");
     }
@@ -48,9 +44,7 @@ const addCartIteams = async (req, res) => {
         .status(404)
         .send("there is no product with this id is available!!");
     }
-    const token = req.headers.authorization?.replace("Bearer ", "");
-    const decodedtoken = jwt.verify(token, secret);
-    const userIdFromToken = decodedtoken.id;
+    const userIdFromToken = parseInt(req.user.id);
     if (isNaN(userIdFromToken)) {
       return res.status(400).send("Invalid User ID");
     }
@@ -86,11 +80,9 @@ const addCartIteams = async (req, res) => {
 const removeIteamsInCart = async (req, res) => {
   try {
     const id = parseInt(req.params.id);
-    const token = req.headers.authorization?.replace("Bearer ", "");
-    const decodedtoken = jwt.verify(token, secret);
-    const userIdFromToken = decodedtoken.id;
+    const userIdFromToken = parseInt(req.user.id);
     const product = await cart.destroy({
-      where: { product_id: id, user_id: userIdFromToken },
+      where: { id: id, user_id: userIdFromToken },
     });
     if (!product) {
       return res
@@ -103,13 +95,12 @@ const removeIteamsInCart = async (req, res) => {
   }
 };
 
+
 // WISHLIST CONTROLLERS
 
 const getWishList = async (req, res) => {
   try {
-    const token = req.headers.authorization?.replace("Bearer ", "");
-    const decodedtoken = jwt.verify(token, secret);
-    const userIdFromToken = decodedtoken.id;
+    const userIdFromToken = parseInt(req.user.id);
     if (isNaN(userIdFromToken)) {
       return res.status(400).send("Invalid User ID");
     }
@@ -146,18 +137,20 @@ const addItemsInWishlist = async (req, res) => {
         .send("there is no product with this id is available!!");
     }
 
-    const token = req.headers.authorization?.replace("Bearer ", "");
-    const decodedtoken = jwt.verify(token, secret);
-    const userIdFromToken = decodedtoken.id;
+    const userIdFromToken = parseInt(req.user.id);
 
     const checkPIdFromWishlist = await wishlist.findAll({
       where: { product_id },
     });
-    if (checkPIdFromWishlist && userIdFromToken) {
-      return res
-        .status(403)
-        .send("this item is already exists in your wishlist!!");
+
+    const checkWishlistItem = await wishlist.findOne({
+      where: { user_id: userIdFromToken, product_id },
+    }); 
+
+    if (checkWishlistItem) {
+      return res.status(403).send("This item already exists in your wishlist!");
     }
+
     if (isNaN(userIdFromToken)) {
       return res.status(400).send("Invalid User ID");
     }
@@ -176,11 +169,9 @@ const addItemsInWishlist = async (req, res) => {
 const removeItemsFromWishlist = async (req, res) => {
   try {
     const id = parseInt(req.params.id);
-    const token = req.headers.authorization?.replace("Bearer ", "");
-    const decodedtoken = jwt.verify(token, secret);
-    const userIdFromToken = decodedtoken.id;
-    const product = await cart.destroy({
-      where: { product_id: id, user_id: userIdFromToken },
+    const userIdFromToken = parseInt(req.user.id);
+    const product = await wishlist.destroy({
+      where: { id: id, user_id: userIdFromToken },
     });
     if (!product) {
       return res
