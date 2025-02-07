@@ -202,7 +202,20 @@ const updateProductById = async (req, res) => {
       updatedFields: updateQuery,
     });
   } catch (error) {
-    console.error("Error updating product:", error);
+    if (req.file) {
+      try {
+        console.log("dewuifgwerfg");
+        const filepath = req.file.path;
+        if (fs.existsSync(filepath)) {
+          fs.unlinkSync(filepath);
+          console.log("File deleted:", filepath);
+        } else {
+          console.log("File not found:", filepath);
+        }
+      } catch (err) {
+        console.error("Error deleting file:", err);
+      }
+    }
     return res
       .status(500)
       .json({ error: "Failed to update product.", details: error.message });

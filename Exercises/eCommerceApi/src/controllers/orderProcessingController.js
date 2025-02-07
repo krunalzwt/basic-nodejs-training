@@ -27,6 +27,7 @@ const placeNewOrder = async (req, res) => {
       return res.status(400).send("Invalid User ID");
     }
 
+    // Fetch cart items along with product details
     const cartData = await cart.findAll({
       where: { user_id: userIdFromToken },
       include: [
@@ -41,46 +42,48 @@ const placeNewOrder = async (req, res) => {
       return res.status(404).json({ error: "No items in cart!" });
     }
 
+    // Validate stock before creating the order
     for (const item of cartData) {
-      const product = await products.findByPk(item.product_id);
-      if (!product || item.quantity > product.stock) {
+      if (!item.product || item.quantity > item.product.stock) {
         return res.status(403).json({
           error: `Insufficient stock for product ${item.product?.name || item.product_id}`,
         });
       }
     }
 
+    // Calculate total order price
     const totalSum = cartData.reduce((sum, item) => {
       return sum + item.quantity * item.product.price;
     }, 0);
 
-
+    // Create the order
     const orderTableData = await orders.create({
       user_id: userIdFromToken,
       total_price: totalSum,
     });
 
-    const orderItemsData = [];
-    for (const item of cartData) {
-      const product = await products.findByPk(item.product_id);
-      const orderItem = await orderItems.create({
-        order_id: orderTableData.id,
-        product_id: item.product_id,
-        quantity: item.quantity,
-        price: item.product.price,
-      });
-      orderItemsData.push(orderItem);
+    // Prepare order items for bulk insert
+    const orderItemsData = cartData.map((item) => ({
+      order_id: orderTableData.id,
+      product_id: item.product_id,
+      quantity: item.quantity,
+      price: item.product.price,
+    }));
 
-      const remainingStock = product.stock - item.quantity;
-      await products.update(
-        { stock: remainingStock },
+    // Bulk create order items
+    await orderItems.bulkCreate(orderItemsData);
+
+    // Update stock in products table using bulk update
+    const updatedStockPromises = cartData.map((item) => {
+      return products.update(
+        { stock: item.product.stock - item.quantity },
         { where: { id: item.product_id } }
       );
-    }
-
-    await cart.destroy({
-      where: { user_id: userIdFromToken },
     });
+    await Promise.all(updatedStockPromises);
+
+    // Clear the user's cart
+    await cart.destroy({ where: { user_id: userIdFromToken } });
 
     return res.status(201).json({
       confirmation: "Order has been placed!",
@@ -88,9 +91,87 @@ const placeNewOrder = async (req, res) => {
       total_amount: totalSum,
     });
   } catch (error) {
+    console.error("Order Placement Error:", error);
     return res.status(500).json({ message: "An error occurred", error: error.message });
   }
 };
+
+
+
+
+
+// const placeNewOrder = async (req, res) => {
+//   try {
+//     const userIdFromToken = req.user.id;
+
+//     if (isNaN(userIdFromToken)) {
+//       return res.status(400).send("Invalid User ID");
+//     }
+
+//     const cartData = await cart.findAll({
+//       where: { user_id: userIdFromToken },
+//       include: [
+//         {
+//           model: products,
+//           attributes: ["id", "name", "price", "stock"],
+//         },
+//       ],
+//     });
+
+//     if (cartData.length === 0) {
+//       return res.status(404).json({ error: "No items in cart!" });
+//     }
+
+//     for (const item of cartData) {
+//       const product = await products.findByPk(item.product_id);
+//       if (!product || item.quantity > product.stock) {
+//         return res.status(403).json({
+//           error: `Insufficient stock for product ${item.product?.name || item.product_id}`,
+//         });
+//       }
+//     }
+
+//     const totalSum = cartData.reduce((sum, item) => {
+//       return sum + item.quantity * item.product.price;
+//     }, 0);
+
+
+//     const orderTableData = await orders.create({
+//       user_id: userIdFromToken,
+//       total_price: totalSum,
+//     });
+
+//     const orderItemsData = [];
+//     for (const item of cartData) {
+//       const product = await products.findByPk(item.product_id);
+//       const orderItem = await orderItems.create({
+//         order_id: orderTableData.id,
+//         product_id: item.product_id,
+//         quantity: item.quantity,
+//         price: item.product.price,
+//       });
+//       orderItemsData.push(orderItem);
+
+//       const remainingStock = product.stock - item.quantity;
+//       await products.update(
+//         { stock: remainingStock },
+//         { where: { id: item.product_id } }
+//       );
+//     }
+
+//     await cart.destroy({
+//       where: { user_id: userIdFromToken },
+//     });
+
+//     return res.status(201).json({
+//       confirmation: "Order has been placed!",
+//       orderDetails: orderItemsData,
+//       total_amount: totalSum,
+//     });
+//   } catch (error) {
+//     return res.status(500).json({ message: "An error occurred", error: error.message });
+//   }
+// };
 
 const getOrderDetailsById = async (req, res) => {
   try {
