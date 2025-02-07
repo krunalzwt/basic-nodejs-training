@@ -4,7 +4,7 @@ const createProductSchema=yup.object({
         name:yup.string().required('product name is required!!'),
         description:yup.string().optional(),
         price:yup.number().required('product price is required'),
-        stock:yup.number().required('stock is required feilds , please enter the total number of available stock!!'),
+        stock:yup.number().required('stock is required feilds , please enter the total number of available stock!!').positive('ID must be a positive number'),
         category_id:yup.number().required('please enter the appropriate category id'),
     }),
 });
@@ -14,7 +14,7 @@ const updateProductSchema=yup.object({
         name:yup.string().optional(),
         description:yup.string().optional(),
         price:yup.number().optional(),
-        stock:yup.number().optional(),
+        stock:yup.number().optional().positive('ID must be a positive number'),
         category_id:yup.number().optional()
     }),
 })

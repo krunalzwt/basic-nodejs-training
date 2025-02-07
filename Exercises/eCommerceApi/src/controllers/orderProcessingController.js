@@ -19,10 +19,8 @@ const getAllOrders = async (req, res) => {
 };
 
 
-
 const placeNewOrder = async (req, res) => {
   try {
-
     const token = req.headers.authorization?.replace("Bearer ", "");
     const decodedtoken = jwt.verify(token, secret);
     const userIdFromToken = decodedtoken.id;
@@ -36,54 +34,52 @@ const placeNewOrder = async (req, res) => {
       include: [
         {
           model: products,
-          attributes: ["name", "price", "stock"],
+          attributes: ["id", "name", "price", "stock"],
         },
       ],
     });
 
-    // Check if the cart is empty
     if (cartData.length === 0) {
       return res.status(404).json({ error: "No items in cart!" });
     }
 
-    // Calculate total price and total quantity
+    for (const item of cartData) {
+      const product = await products.findByPk(item.product_id);
+      if (!product || item.quantity > product.stock) {
+        return res.status(403).json({
+          error: `Insufficient stock for product ${item.product?.name || item.product_id}`,
+        });
+      }
+    }
+
     const totalSum = cartData.reduce((sum, item) => {
       return sum + item.quantity * item.product.price;
     }, 0);
 
-    const totalQuantity = cartData.reduce((sum, item) => {
-      return sum + item.quantity;
-    }, 0);
-
-    // Check total stock of required product 
-    const productId = cartData[0].product_id;
-    const product = await products.findByPk(productId);
-    const availableStock = product.stock;
-
-    if (totalQuantity > availableStock) {
-      return res.status(403).send("Required stock is not available, please remove some items!");
-    }
 
     const orderTableData = await orders.create({
       user_id: userIdFromToken,
       total_price: totalSum,
     });
 
-    const orderItemsData = await orderItems.create({
-      order_id: orderTableData.id,  
-      product_id: parseInt(cartData[0].product_id),
-      quantity: totalQuantity,
-      price: parseInt(cartData[0].product?.price),
-    });
+    const orderItemsData = [];
+    for (const item of cartData) {
+      const product = await products.findByPk(item.product_id);
+      const orderItem = await orderItems.create({
+        order_id: orderTableData.id,
+        product_id: item.product_id,
+        quantity: item.quantity,
+        price: item.product.price,
+      });
+      orderItemsData.push(orderItem);
 
-    // Update the product stock
-    const remainingStock = product.stock - totalQuantity;
-    await products.update(
-      { stock: remainingStock },
-      { where: { id: productId } }
-    );
+      const remainingStock = product.stock - item.quantity;
+      await products.update(
+        { stock: remainingStock },
+        { where: { id: item.product_id } }
+      );
+    }
 
-    // Remove cart items after the order is placed
     await cart.destroy({
       where: { user_id: userIdFromToken },
     });
@@ -91,10 +87,10 @@ const placeNewOrder = async (req, res) => {
     return res.status(201).json({
       confirmation: "Order has been placed!",
       orderDetails: orderItemsData,
-      total_amount: orderTableData,
+      total_amount: totalSum,
     });
   } catch (error) {
-    return res.status(500).send({ message: "An error occurred", error: error.message });
+    return res.status(500).json({ message: "An error occurred", error: error.message });
   }
 };
 
