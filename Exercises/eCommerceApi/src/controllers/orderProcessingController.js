@@ -1,7 +1,5 @@
 const orders = require("../models/ordersModel");
 const orderItems = require("../models/orderItemsModel");
-// const secret = "abc$@123$";
-// const jwt = require("jsonwebtoken");
 const cart = require("../models/cartModel");
 const products = require("../models/productsModel");
 const { where } = require("sequelize");
