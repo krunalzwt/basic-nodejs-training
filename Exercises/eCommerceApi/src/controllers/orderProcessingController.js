@@ -1,7 +1,7 @@
 const orders = require("../models/ordersModel");
 const orderItems = require("../models/orderItemsModel");
-const secret = "abc$@123$";
-const jwt = require("jsonwebtoken");
+// const secret = "abc$@123$";
+// const jwt = require("jsonwebtoken");
 const cart = require("../models/cartModel");
 const products = require("../models/productsModel");
 const { where } = require("sequelize");
@@ -21,9 +21,7 @@ const getAllOrders = async (req, res) => {
 
 const placeNewOrder = async (req, res) => {
   try {
-    const token = req.headers.authorization?.replace("Bearer ", "");
-    const decodedtoken = jwt.verify(token, secret);
-    const userIdFromToken = decodedtoken.id;
+    const userIdFromToken = req.user.id;
 
     if (isNaN(userIdFromToken)) {
       return res.status(400).send("Invalid User ID");

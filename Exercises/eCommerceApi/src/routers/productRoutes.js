@@ -34,7 +34,7 @@ router.route('/wishlist/:id').delete(authorizeCustomer,authMiddleware,validation
 
 
 // order processing routes
-router.route('/orders').get(authorizeCustomer,getAllOrders).post(authorizeCustomer,placeNewOrder);
+router.route('/orders').get(authorizeCustomer,getAllOrders).post(authorizeCustomer,authMiddleware,placeNewOrder);
 
 router.route('/orders/:id').get(authorizeCustomer,validation(idValidationSchema),getOrderDetailsById);
 
