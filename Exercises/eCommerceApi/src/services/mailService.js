@@ -8,8 +8,8 @@ const sendOrderConfirmationEmail = async (userEmail, order, orderItems) => {
       host: "smtp.gmail.com",
       port: 465,
       auth: {
-        user: "silveroakgaming18@gmail.com",
-        pass: "wlssikdfmbhmgzqv",
+        user:'',
+        pass:''
       },
     });
 
