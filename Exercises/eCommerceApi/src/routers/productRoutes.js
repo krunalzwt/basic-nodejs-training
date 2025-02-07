@@ -11,7 +11,6 @@ const { createCartSchema, createWishlistSchema } = require('../Validations/cartA
 const { updateStatusSchema } = require('../Validations/ordersValidations');
 const { idValidationSchema } = require('../Validations/idValidationSchema');
 const authMiddleware=require('../middleware/authMiddleware');
-const {validateProduct}=require('../Validations/productValidate');
 
 
 
