@@ -1,7 +1,8 @@
 const express=require('express');
 const app=express();
-const dotenv=require('../../.env');
-const port=process.env.APP_PORT || 8080;
+const path = require('path');
+const dotenv=require('dotenv').config({path:path.resolve(__dirname,'../../.env')});
+const port=process.env.APP_PORT2 || 8080;
 const {sequelize} = require("./src/config/dbConnection.js");
 const users=require('./src/models/usersModel.js');
 const products=require('./src/models/productsModel.js');
