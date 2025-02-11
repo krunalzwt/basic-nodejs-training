@@ -12,6 +12,16 @@ const orderItems=require('./src/models/orderItemsModel.js');
 const orders=require('./src/models/ordersModel.js');
 const whishlist=require('./src/models/wishlistModel.js');
 const { root } = require('./src/controllers/userController.js');
+const cors = require("cors");
+
+app.use("/uploads", express.static(path.join("D:", "NodeJs", "Exercises", "eCommerceApi", "uploads")));
+
+
+app.use(cors({
+  origin: "http://localhost:5173",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
