@@ -17,7 +17,6 @@ const getAllOrders = async (req, res) => {
   }
 };
 
-
 const placeNewOrder = async (req, res) => {
   try {
     const userIdFromToken = req.user.id;
@@ -81,7 +80,7 @@ const placeNewOrder = async (req, res) => {
       where: { user_id: userIdFromToken },
     });
 
-    await sendOrderConfirmationEmail(req.user.email, orderTableData, orderItemsData);
+    // await sendOrderConfirmationEmail(req.user.email, orderTableData, orderItemsData);
 
     return res.status(201).json({
       confirmation: "Order has been placed!",
@@ -116,6 +115,29 @@ const getOrderDetailsById = async (req, res) => {
   }
 };
 
+const getAllOrdersItems = async (req, res) => {
+  try {
+    const orderId = req.params.id;
+    const rows = await orderItems.findAll({
+      include:[
+        {
+          model:products,
+          attributes:["name","image_url"],
+        },{
+          model:orders,
+          attributes:["status"]
+        }
+      ]
+    });
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "No orders found" });
+    }
+    return res.json(rows);
+  } catch (error) {
+    return res.status(500).send("Failed to fetch all orders.");
+  }
+};
+
 const updateOrderStatus=async(req,res)=>{
   try{
     const orderId=req.params.id;
@@ -132,4 +154,4 @@ const updateOrderStatus=async(req,res)=>{
   }
 }
 
-module.exports = { getAllOrders, placeNewOrder,getOrderDetailsById ,updateOrderStatus};
+module.exports = { getAllOrders, placeNewOrder,getOrderDetailsById ,updateOrderStatus,getAllOrdersItems};

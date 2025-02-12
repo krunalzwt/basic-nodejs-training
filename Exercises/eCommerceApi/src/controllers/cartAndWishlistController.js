@@ -16,12 +16,12 @@ const getCartItems = async (req, res) => {
       include: [
         {
           model: products,
-          attributes: ["name"],
+          attributes: ["name","price","image_url"],
         },
       ],
     });
     if (userCart.length === 0) {
-      return res.status(404).send("Cart is empty, Please add some Products!!");
+      return res.status(200).json([]);
     }
     res.status(200).json(userCart);
   } catch (error) {

@@ -4,7 +4,7 @@ const { getAllCategories, createCategories, upload, createProduct, getAllProduct
 const authorizeAdmin = require('../middleware/authorizeAdmin');
 const authorizeCustomer = require('../middleware/authorizeCustomer');
 const { getCartItems, addCartIteams, removeIteamsInCart, getWishList, addItemsInWishlist, removeItemsFromWishlist } = require('../controllers/cartAndWishlistController');
-const { getAllOrders, placeNewOrder, getOrderDetailsById, updateOrderStatus } = require('../controllers/orderProcessingController');
+const { getAllOrders, placeNewOrder, getOrderDetailsById, updateOrderStatus, getAllOrdersItems } = require('../controllers/orderProcessingController');
 const validation=require('../middleware/validationMiddleware');
 const { createCategorySchema, createProductSchema, updateProductSchema } = require('../Validations/productAndCategoryValidations');
 const { createCartSchema, createWishlistSchema } = require('../Validations/cartAndWishlistValidations');
@@ -29,7 +29,7 @@ router.route('/cart').get(authorizeCustomer,authMiddleware,getCartItems).post(au
 router.route('/cart/:id').delete(authorizeCustomer,authMiddleware,validation(idValidationSchema),removeIteamsInCart);
 
 router.route('/wishlist').get(authorizeCustomer,authMiddleware,getWishList).post(authorizeCustomer,authMiddleware,validation(createWishlistSchema),addItemsInWishlist);
-
+    
 router.route('/wishlist/:id').delete(authorizeCustomer,authMiddleware,validation(idValidationSchema),removeItemsFromWishlist);
 
 
@@ -39,6 +39,8 @@ router.route('/orders').get(authorizeCustomer,getAllOrders).post(authorizeCustom
 router.route('/orders/:id').get(authorizeCustomer,validation(idValidationSchema),getOrderDetailsById);
 
 router.route('/orders/:id/status').put(authorizeAdmin,validation(idValidationSchema),validation(updateStatusSchema),updateOrderStatus);
+
+router.route('/orderitem').get(authorizeCustomer,getAllOrdersItems)
 
 
 
