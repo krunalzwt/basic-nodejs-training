@@ -4,7 +4,7 @@ const { getAllCategories, createCategories, upload, createProduct, getAllProduct
 const authorizeAdmin = require('../middleware/authorizeAdmin');
 const authorizeCustomer = require('../middleware/authorizeCustomer');
 const { getCartItems, addCartIteams, removeIteamsInCart, getWishList, addItemsInWishlist, removeItemsFromWishlist } = require('../controllers/cartAndWishlistController');
-const { getAllOrders, placeNewOrder, getOrderDetailsById, updateOrderStatus, getAllOrdersItems } = require('../controllers/orderProcessingController');
+const { getAllOrders, placeNewOrder, getOrderDetailsById, updateOrderStatus, getAllOrdersAdmin } = require('../controllers/orderProcessingController');
 const validation=require('../middleware/validationMiddleware');
 const { createCategorySchema, createProductSchema, updateProductSchema } = require('../Validations/productAndCategoryValidations');
 const { createCartSchema, createWishlistSchema } = require('../Validations/cartAndWishlistValidations');
@@ -34,13 +34,15 @@ router.route('/wishlist/:id').delete(authorizeCustomer,authMiddleware,validation
 
 
 // order processing routes
-router.route('/orders').get(authorizeCustomer,getAllOrders).post(authorizeCustomer,authMiddleware,placeNewOrder);
+router.route('/orders').get(authorizeCustomer,authMiddleware,getAllOrders).post(authorizeCustomer,authMiddleware,placeNewOrder);
 
 router.route('/orders/:id').get(authorizeCustomer,validation(idValidationSchema),getOrderDetailsById);
 
 router.route('/orders/:id/status').put(authorizeAdmin,validation(idValidationSchema),validation(updateStatusSchema),updateOrderStatus);
 
-router.route('/orderitem').get(authorizeCustomer,getAllOrdersItems)
+router.route('/allorders').get(authorizeAdmin,authMiddleware,getAllOrdersAdmin);
+
+// router.route('/orderitem').get(authorizeCustomer,getAllOrdersItems)
 
 
 

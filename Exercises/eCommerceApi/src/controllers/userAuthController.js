@@ -15,8 +15,7 @@ const login = async (req, res) => {
       const verify = bcrypt.compareSync(password, user.password);
       if (verify) {
         const token = setUser(user);
-        console.log(token);
-        return res.status(200).json({ message: "Login successful!", token });
+        return res.status(200).json({ message: "Login successful!", token,role:user.role });
       } else {
         return res.status(403).send("Incorrect password!");
       }
@@ -25,7 +24,7 @@ const login = async (req, res) => {
     console.log(err);
     return res.status(500).json({ message: "An error occurred during login." });
   }
-};
+};  
 
 
 const signup = async(req, res) => {
