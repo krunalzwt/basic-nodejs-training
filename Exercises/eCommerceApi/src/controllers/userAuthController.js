@@ -1,7 +1,6 @@
-const users=require('../models/usersModel');
-const {setUser,getUser}=require('../services/auth');
-const bcrypt=require('bcrypt');
-
+const users = require("../models/usersModel");
+const { setUser, getUser } = require("../services/auth");
+const bcrypt = require("bcrypt");
 
 const login = async (req, res) => {
   const { username, password } = req.body;
@@ -15,7 +14,9 @@ const login = async (req, res) => {
       const verify = bcrypt.compareSync(password, user.password);
       if (verify) {
         const token = setUser(user);
-        return res.status(200).json({ message: "Login successful!", token,role:user.role });
+        return res
+          .status(200)
+          .json({ message: "Login successful!", token, role: user.role });
       } else {
         return res.status(403).send("Incorrect password!");
       }
@@ -24,27 +25,30 @@ const login = async (req, res) => {
     console.log(err);
     return res.status(500).json({ message: "An error occurred during login." });
   }
-};  
-
-
-const signup = async(req, res) => {
-    try {
-      const { first_name,last_name, email, password, role} = req.body;
-      const result = await users.create({
-        first_name,
-        last_name,
-        email,
-        password,
-        role
-      });
-      return res.status(201).json(result);
-    } catch (error) {
-      return res.status(500).send(error);
-    }
 };
-  
-  module.exports = {
-    login,
-    signup
-  };
-  
+
+const signup = async (req, res) => {
+  try {
+    const { first_name, last_name, email, password, role } = req.body;
+    const result = await users.create({
+      first_name,
+      last_name,
+      email,
+      password,
+      role,
+    });
+    return res.status(201).json(result);
+  } catch (error) {
+    if (error.name === "SequelizeUniqueConstraintError") {
+      return res
+        .status(403)
+        .json({ message: "User with this email already exists!" });
+    }
+    return res.status(500).send(error);
+  }
+};
+
+module.exports = {
+  login,
+  signup,
+};
