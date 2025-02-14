@@ -114,7 +114,6 @@ const createProduct = async (req, res) => {
     if (error.name === "SequelizeForeignKeyConstraintError") {
       if (req.file) {
         try {
-          console.log("dewuifgwerfg");
           const filepath = req.file.path;
           if (fs.existsSync(filepath)) {
             fs.unlinkSync(filepath);
