@@ -3,7 +3,7 @@ const createProductSchema=yup.object({
     body:yup.object({
         name:yup.string().required('product name is required!!'),
         description:yup.string().optional(),
-        price:yup.number().required('product price is required'),
+        price:yup.number().required('product price is required').positive().min(1),
         stock:yup.number().required('stock is required feilds , please enter the total number of available stock!!').positive('ID must be a positive number'),
         category_id:yup.number().required('please enter the appropriate category id').integer(),
     }),
