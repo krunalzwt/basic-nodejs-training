@@ -16,7 +16,7 @@ const getCartItems = async (req, res) => {
       include: [
         {
           model: products,
-          attributes: ["name","price","image_url"],
+          attributes: ["name", "price", "image_url"],
         },
       ],
     });
@@ -54,7 +54,8 @@ const addCartIteams = async (req, res) => {
     });
 
     if (existingCartItem) {
-      const updatedQuantity = parseInt(existingCartItem.quantity) + parseInt(quantity);
+      const updatedQuantity =
+        parseInt(existingCartItem.quantity) + parseInt(quantity);
       await cart.update(
         { quantity: updatedQuantity },
         { where: { id: existingCartItem.id } }
@@ -62,7 +63,6 @@ const addCartIteams = async (req, res) => {
 
       return res.status(200).json({ message: "Cart updated successfully!" });
     } else {
-
       const result = await cart.create({
         user_id: userIdFromToken,
         product_id,
@@ -91,6 +91,40 @@ const removeIteamsInCart = async (req, res) => {
     }
     res.status(200).send("item removed successfully!!");
   } catch (error) {
+    return res.status(500).send(error);
+  }
+};
+
+const removeOneItemFromCart = async (req, res) => {
+  try {
+    const { product_id } = req.body; 
+    console.log(req.body);
+    const userIdFromToken = parseInt(req.user.id);
+    
+    if (isNaN(userIdFromToken)) {
+      return res.status(400).send("Invalid User ID");
+    }
+
+    const existingCartItem = await cart.findOne({
+      where: { user_id: userIdFromToken, product_id },
+    });
+
+    if (!existingCartItem) {
+      return res.status(404).send("Product not found in cart");
+    }
+
+    if (existingCartItem.quantity > 1) {
+      await cart.update(
+        { quantity: existingCartItem.quantity - 1 },
+        { where: { id: existingCartItem.id } }
+      );
+      return res.status(200).json({ message: "Cart updated successfully!" });
+    } else {
+      await cart.destroy({ where: { id: existingCartItem.id } });
+      return res.status(200).json({ message: "Item removed from cart" });
+    }
+  } catch (error) {
+    console.log(error);
     return res.status(500).send(error);
   }
 };
@@ -145,7 +179,7 @@ const addItemsInWishlist = async (req, res) => {
 
     const checkWishlistItem = await wishlist.findOne({
       where: { user_id: userIdFromToken, product_id },
-    }); 
+    });
 
     if (checkWishlistItem) {
       return res.status(403).send("This item already exists in your wishlist!");
@@ -191,4 +225,5 @@ module.exports = {
   getWishList,
   addItemsInWishlist,
   removeItemsFromWishlist,
+  removeOneItemFromCart,
 };
