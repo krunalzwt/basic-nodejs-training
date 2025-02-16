@@ -14,7 +14,8 @@ const whishlist=require('./src/models/wishlistModel.js');
 const { root } = require('./src/controllers/userController.js');
 const cors = require("cors");
 
-app.use("/uploads", express.static(path.join("D:", "NodeJs", "Exercises", "eCommerceApi", "uploads")));
+// app.use("/uploads", express.static(path.join("D:", "NodeJs", "Exercises", "eCommerceApi", "uploads"))); //have to change according to own pc path..
+app.use("/uploads", express.static(path.join("C:", "ZWT","basic-nodejs-training", "Exercises", "eCommerceApi", "uploads"))); //have to change according to own pc path..
 
 
 app.use(cors({
