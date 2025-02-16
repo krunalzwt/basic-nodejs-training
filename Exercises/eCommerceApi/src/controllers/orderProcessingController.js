@@ -130,6 +130,7 @@ const placeNewOrder = async (req, res) => {
       total_amount: totalSum,
     });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ message: "An error occurred", error: error.message });
   }
 };
