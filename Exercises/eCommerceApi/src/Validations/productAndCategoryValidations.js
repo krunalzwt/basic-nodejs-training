@@ -13,7 +13,7 @@ const updateProductSchema=yup.object({
     body:yup.object({
         name:yup.string().optional(),
         description:yup.string().optional(),
-        price:yup.number().optional(),
+        price:yup.number().optional().positive().min(1),
         stock:yup.number().optional().positive('ID must be a positive number'),
         category_id:yup.number().optional()
     }),

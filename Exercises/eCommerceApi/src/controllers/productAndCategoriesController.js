@@ -111,7 +111,7 @@ const createProduct = async (req, res) => {
     });
     return res.status(201).json(result);
   } catch (error) {
-    if (error.name === "SequelizeForeignKeyConstraintError") {
+    if (error.name === "SequelizeForeignKeyConstraintError" || error.name=== "SequelizeUniqueConstraintError") {
       if (req.file) {
         try {
           const filepath = req.file.path;
@@ -125,9 +125,17 @@ const createProduct = async (req, res) => {
           console.error("Error deleting file:", err);
         }
       }
-      return res.status(400).json({
-        message: `provided category does't exists! please enter id from available categories!!.`,
-      });
+
+      if(error.name==="SequelizeForeignKeyConstraintError"){
+        return res.status(400).json({
+          message: `provided category does't exists! please enter id from available categories!!.`,
+        });
+      }
+      if(error.name==="SequelizeUniqueConstraintError"){
+        return res.status(403).json({
+          message: `product with this name already exists!!`,
+        });
+      }
     }
     return res.status(500).send(error);
   }
